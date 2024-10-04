@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import EntradaMoneda from "../../components/EntradaMoneda";
 import simulacionData from "../../utils/simulacion.json"; // Import the JSON data
 import { useNavigate } from "react-router-dom"; // Importa el hook useNavigate
-import Popup from "./Popup";
+
 import { isMobile } from "react-device-detect";
 import { ReactComponent as CalendarIcon } from "../../img/calendar-days.svg";
 import { ReactComponent as PercentageIcon } from "../../img/percentage.svg";
@@ -18,10 +18,6 @@ const Card = ({ option, handlePopupClick }) => {
 
   const navigate = useNavigate();
 
-  // const [showPopup, setShowPopup] = useState(false);
-  // const handlePopupClick = () => {
-  //   setShowPopup(!showPopup);
-  // };
   const handleTooltipClick = () => {
     setShowTooltip(!showTooltip);
   };
@@ -78,31 +74,6 @@ const Card = ({ option, handlePopupClick }) => {
           </a>
         </p>
       </div>
-      {/* {showPopup && (
-        <div
-          className="popup"
-          style={{
-            padding: "20px",
-            backgroundColor: "#f9f9f9",
-            border: "1px solid #ccc",
-            borderRadius: "10px",
-            marginTop: "10px",
-          }}
-        >
-          <h1 style={{ color: "#2e4e9c", textDecoration: "underline" }}>
-            CREDITO INTELIGENTE
-          </h1>
-          <button onClick={handlePopupClick}>Cerrar</button>
-          <p>Plazo: 24 + Cuoton o 36 + Cuoton*</p>
-          <p>Tasa: Fija mensual</p>
-          <p>Pie: Mínimo 20% | Máximo 30%</p>
-          <p>Financiamiento: Autos con 2 años de antigüedad máxima</p>
-          <p>
-            Cuotas: Al final del periodo renueva tu auto o refinancia el cuoton*
-          </p>
-        </div>
-        // <Popup />
-      )} */}
 
       <div
         className="card-body"
@@ -241,17 +212,7 @@ const Card = ({ option, handlePopupClick }) => {
                 </span>
               </div>
               {showTooltip && (
-                <div
-                  className="tooltip"
-                  //   style={{
-                  //     backgroundColor: "#f9f9f9",
-                  //     padding: "10px",
-                  //     border: "1px solid #ccc",
-                  //     borderRadius: "5px",
-                  //     marginTop: "10px",
-                  //     position: "absolute",
-                  //   }}
-                >
+                <div className="tooltip">
                   <p>
                     Al financiar un vehículo con el crédito automotriz
                     inteligente, también tienes la opción de quedarte con él
@@ -503,7 +464,6 @@ const Simulacion = ({ onNextStep, onPreviousStep }) => {
                   </ul>
                 </div>
               </div>
-              // <Popup />
             )}
             {dataS.length > 0 ? (
               dataS.map((option) => (
