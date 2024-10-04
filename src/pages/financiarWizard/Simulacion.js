@@ -1,19 +1,27 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import EntradaMoneda from "../../components/EntradaMoneda";
 import simulacionData from "../../utils/simulacion.json"; // Import the JSON data
 import { useNavigate } from "react-router-dom"; // Importa el hook useNavigate
+import Popup from "./Popup";
+import { isMobile } from "react-device-detect";
+import { ReactComponent as CalendarIcon } from "../../img/calendar-days.svg";
+import { ReactComponent as PercentageIcon } from "../../img/percentage.svg";
+import { ReactComponent as PieChartIcon } from "../../img/pie-chart.svg";
+import { ReactComponent as CoinsIcon } from "../../img/coins-stacked.svg";
+import { ReactComponent as CarIcon } from "../../img/car-black.svg";
 
-const Card = ({ option }) => {
+const Card = ({ option, handlePopupClick }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [showCostoTooltip, setShowCostoTooltip] = useState(false);
   const [showValorTooltip, setShowValorTooltip] = useState(false);
   const [showCAETooltip, setShowCAETooltip] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
+
   const navigate = useNavigate();
 
-  const handlePopupClick = () => {
-    setShowPopup(!showPopup);
-  };
+  // const [showPopup, setShowPopup] = useState(false);
+  // const handlePopupClick = () => {
+  //   setShowPopup(!showPopup);
+  // };
   const handleTooltipClick = () => {
     setShowTooltip(!showTooltip);
   };
@@ -61,12 +69,6 @@ const Card = ({ option }) => {
         </h2>
         <p className="mas-info">
           <a
-            href="#"
-            style={{
-              color: "#2e4e9c",
-              textDecoration: "underline",
-              cursor: "pointer",
-            }}
             onClick={(event) => {
               event.preventDefault(); // Evitar comportamiento predeterminado del enlace
               handlePopupClick(); // Llamar a la función que muestra el popup
@@ -76,7 +78,7 @@ const Card = ({ option }) => {
           </a>
         </p>
       </div>
-      {showPopup && (
+      {/* {showPopup && (
         <div
           className="popup"
           style={{
@@ -99,7 +101,8 @@ const Card = ({ option }) => {
             Cuotas: Al final del periodo renueva tu auto o refinancia el cuoton*
           </p>
         </div>
-      )}
+        // <Popup />
+      )} */}
 
       <div
         className="card-body"
@@ -137,6 +140,25 @@ const Card = ({ option }) => {
               {option.valorCuota.toLocaleString("es-ES")}
             </h3>
           </div>
+          {!isMobile ? (
+            <div>
+              <p style={{ fontSize: "14px", color: "#000", margin: 0 }}>
+                CAE (Costo Anual Equivalente)
+              </p>
+              <p
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  color: "#004E9C",
+                  textAlign: "left",
+                }}
+              >
+                {option.cae.toLocaleString("es-ES")}
+              </p>
+            </div>
+          ) : null}
+        </div>
+        {isMobile ? (
           <div>
             <p style={{ fontSize: "14px", color: "#000", margin: 0 }}>
               CAE (Costo Anual Equivalente)
@@ -152,7 +174,7 @@ const Card = ({ option }) => {
               {option.cae.toLocaleString("es-ES")}
             </p>
           </div>
-        </div>
+        ) : null}
         <div
           className="card-content"
           style={{
@@ -285,6 +307,11 @@ const Simulacion = ({ onNextStep, onPreviousStep }) => {
     setShowOptions(true);
   };
 
+  const [showPopup, setShowPopup] = useState(false);
+  const handlePopupClick = () => {
+    setShowPopup(!showPopup);
+  };
+
   useEffect(() => {
     handleCalculate();
   }, []);
@@ -298,7 +325,7 @@ const Simulacion = ({ onNextStep, onPreviousStep }) => {
   }
 
   return (
-    <div>
+    <div className="simulacion-container">
       <h1>Resultados de simulación</h1>
       <p>Te ofrecemos distintas alternativas según el monto solicitado</p>
       <div className="form-row">
@@ -306,7 +333,10 @@ const Simulacion = ({ onNextStep, onPreviousStep }) => {
           <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
             Valor aproximado del vehículo*
           </label>
-          <div className="outlinedInput-root textField-root inputBase-root">
+          <div
+            className="outlinedInput-root textField-root inputBase-root"
+            style={!isMobile ? { width: "50%" } : { width: "100%" }}
+          >
             <EntradaMoneda
               value={existingData.carValue}
               name="valor"
@@ -315,66 +345,192 @@ const Simulacion = ({ onNextStep, onPreviousStep }) => {
               disabled={true}
             />
           </div>
-        </div>
-        <div className="formControl-root simulacionRow cuotas">
-          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
-            Número de cuotas*
-          </label>
-          <div className="outlinedInput-root textField-root inputBase-root">
-            <select
-              name="cuotas"
-              className="form-input-column cuotas"
-              value={existingData.fee || ""}
+          {!isMobile ? (
+            <div
+              className="formControl-root simulacionRow cuotas"
+              style={{ margin: 0, width: "50%" }} //isMobile ?
             >
-              {[6, 12, 18, 24, 30, 36, 42, 48].map((cuota) => (
-                <option key={cuota} value={cuota}>
-                  {cuota}
-                </option>
-              ))}
-            </select>
+              <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
+                Número de cuotas*
+              </label>
+              <div className="outlinedInput-root textField-root inputBase-root">
+                <select
+                  name="cuotas"
+                  className="form-input-column cuotas"
+                  value={existingData.fee || ""}
+                >
+                  {[6, 12, 18, 24, 30, 36, 42, 48].map((cuota) => (
+                    <option key={cuota} value={cuota}>
+                      {cuota}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          ) : null}
+        </div>
+        <div className="simulacion-cuotas-movil">
+          {isMobile ? (
+            <div
+              className="formControl-root simulacionRow cuotas"
+              style={isMobile ? { margin: 0, width: "50%" } : null}
+            >
+              <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
+                Número de cuotas*
+              </label>
+              <div className="outlinedInput-root textField-root inputBase-root">
+                <select
+                  name="cuotas"
+                  className="form-input-column cuotas"
+                  value={existingData.fee || ""}
+                >
+                  {[6, 12, 18, 24, 30, 36, 42, 48].map((cuota) => (
+                    <option key={cuota} value={cuota}>
+                      {cuota}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          ) : null}
+          <button onClick={handleCalculate} className="recalcular-button">
+            RECALCULAR
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              className="bi bi-arrow-repeat"
+              viewBox="0 0 16 16"
+            >
+              <path d="M11.534 7h-7.07a.5.5 0 0 0 0 1h7.07l-.854.854a.5.5 0 1 0 .708.708l1.75-1.75a.5.5 0 0 0 0-.708l-1.75-1.75a.5.5 0 1 0-.708.708l.854.854zM4.466 9h7.07a.5.5 0 1 0 0-1h-7.07l.854-.854a.5.5 0 1 0-.708-.708l-1.75 1.75a.5.5 0 0 0 0 .708l1.75 1.75a.5.5 0 0 0 .708-.708L4.466 9z" />
+            </svg>
+          </button>
+        </div>
+
+        {showOptions && (
+          <div className="options-list">
+            {showPopup && (
+              <div
+                className="popup"
+                style={{
+                  padding: "20px",
+                  backgroundColor: "#f9f9f9",
+                  border: "1px solid #ccc",
+                  borderRadius: "10px",
+                  marginTop: "10px",
+                  zIndex: 1,
+                }}
+              >
+                <div className="popup-header">
+                  <h1 style={{ color: "#2e4e9c" }}>
+                    <strong>CREDITO INTELIGENTE</strong>
+                  </h1>
+                  <a
+                    style={{ color: "#2e4e9c" }}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      handlePopupClick();
+                    }}
+                  >
+                    Cerrar X
+                  </a>
+                </div>
+                <h4 style={{ marginBottom: "15px" }}>
+                  <strong>Caracteristicas:</strong>
+                </h4>
+                <div className="popup-item">
+                  <CalendarIcon width="35" height="35" />
+                  <p>
+                    <strong>Plazo:</strong> 24 + Cuoton o 36 + Cuoton*
+                  </p>
+                </div>
+                <div className="popup-item">
+                  <PercentageIcon width="35" height="35" />
+                  <p>
+                    <strong>Tasa:</strong> Fija mensual
+                  </p>
+                </div>
+                <div className="popup-item">
+                  <PieChartIcon width="35" height="35" />
+                  <p>
+                    <strong>Pie:</strong> Mínimo 20% | Máximo 30%
+                  </p>
+                </div>
+                <div className="popup-item">
+                  <CoinsIcon width="35" height="35" />
+                  <p>
+                    <strong>Financiamiento:</strong> Autos con 2 años de
+                    antigüedad máxima
+                  </p>
+                </div>
+                <div className="popup-item">
+                  <CarIcon width="35" height="35" />
+                  <p>
+                    <strong>Cuotas:</strong> Al final del periodo renueva tu
+                    auto o refinancia el cuoton*
+                  </p>
+                </div>
+                <div className="extra-info">
+                  <ul>
+                    <li>
+                      Calculo de simulación realizada automáticamente a 30 días,
+                      valores cuota pueden variar al realizar el cálculo de la
+                      contratación del crédito automotriz definitivo.
+                    </li>
+                    <li>
+                      Cuota incluye seguro de desgravamen y cesantía, para
+                      incluir otros seguros llamar al 600 370 9000.
+                    </li>
+                    <li>
+                      Cuota simulada aplica única y exclusivamente a la
+                      contratación de créditos para vehículos particulares.
+                    </li>
+                    <li>
+                      <strong>Crediautos</strong> se reserva el derecho de
+                      aprobación en función de las políticas crediticias
+                      vigentes y previa comprobación de antecedentes financieros
+                      y comerciales del solicitante.
+                    </li>
+                    <li>
+                      Para mayor información sobre nuestros requisitos,
+                      revisa&nbsp;
+                      <a href="#" target="_blank" rel="noopener noreferrer">
+                        Condiciones para Acceder a Créditos
+                      </a>
+                      .
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              // <Popup />
+            )}
+            {dataS.length > 0 ? (
+              dataS.map((option) => (
+                <Card
+                  key={option.id}
+                  option={option}
+                  handlePopupClick={handlePopupClick}
+                />
+              ))
+            ) : (
+              <p>No options available</p>
+            )}
+            <div className="simulacion-formalizar-info">
+              <p>
+                Tras confirmar la simulación, un agente se contactará contigo
+                para formalizar el contrato.
+              </p>
+            </div>
           </div>
+        )}
+
+        {/* Botones de navegación */}
+        <div className="navButtonContainer">
+          <button className="atrasButton" onClick={onPreviousStep}>
+            Volver a simular
+          </button>
         </div>
-      </div>
-
-      <button
-        style={{ marginLeft: "7px", marginTop: "12px" }}
-        onClick={handleCalculate}
-        className="recalcular-button"
-      >
-        RECALCULAR
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="currentColor"
-          className="bi bi-arrow-repeat"
-          viewBox="0 0 16 16"
-        >
-          <path d="M11.534 7h-7.07a.5.5 0 0 0 0 1h7.07l-.854.854a.5.5 0 1 0 .708.708l1.75-1.75a.5.5 0 0 0 0-.708l-1.75-1.75a.5.5 0 1 0-.708.708l.854.854zM4.466 9h7.07a.5.5 0 1 0 0-1h-7.07l.854-.854a.5.5 0 1 0-.708-.708l-1.75 1.75a.5.5 0 0 0 0 .708l1.75 1.75a.5.5 0 0 0 .708-.708L4.466 9z" />
-        </svg>
-      </button>
-
-      {showOptions && (
-        <div className="options-list">
-          {dataS.length > 0 ? (
-            dataS.map((option) => <Card key={option.id} option={option} />)
-          ) : (
-            <p>No options available</p>
-          )}
-        </div>
-      )}
-
-      <div>
-        <p>
-          Tras confirmar la simulación, un agente se contactará contigo para
-          formalizar el contrato.
-        </p>
-      </div>
-      {/* Botones de navegación */}
-      <div className="navButtonContainer">
-        <button className="atrasButton" onClick={onPreviousStep}>
-          Volver a simular
-        </button>
       </div>
     </div>
   );

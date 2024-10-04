@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import EntradaMoneda from '../../components/EntradaMoneda';
-import values from '../../utils/values.json';
-import { formatRUT, formatPhone, getCurrentDate } from '../../utils/formUtils';
-import { saveToLocalStorage } from '../../services/storageService';
-import { postClientData } from '../../services/apiService';
+import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import EntradaMoneda from "../../components/EntradaMoneda";
+import values from "../../utils/values.json";
+import { formatRUT, formatPhone, getCurrentDate } from "../../utils/formUtils";
+import { saveToLocalStorage } from "../../services/storageService";
+import { postClientData } from "../../services/apiService";
 
 const ContactForm = ({ onNextStep }) => {
   const formRef = useRef(null);
@@ -12,25 +12,30 @@ const ContactForm = ({ onNextStep }) => {
 
   // Estado del formulario
   const [formData, setFormData] = useState({
-    rut: '',
-    telefono: '+56 9',
-    correo: '',
-    empleo: '',
-    renta: '',
-    fechaIngLab: '',
+    rut: "",
+    telefono: "+56 9",
+    correo: "",
+    empleo: "",
+    renta: "",
+    fechaIngLab: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   // Almacenar los datos en localStorage cuando cambien
   useEffect(() => {
-    saveToLocalStorage('formData', formData);
+    saveToLocalStorage("formData", formData);
   }, [formData]);
 
   // Manejar los cambios en los campos del formulario
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    const formattedValue = name === 'rut' ? formatRUT(value) : name === 'telefono' ? formatPhone(value) : value;
+    const formattedValue =
+      name === "rut"
+        ? formatRUT(value)
+        : name === "telefono"
+        ? formatPhone(value)
+        : value;
     setFormData((prevData) => ({ ...prevData, [name]: formattedValue }));
   };
 
@@ -44,28 +49,34 @@ const ContactForm = ({ onNextStep }) => {
     const submittedData = {
       rut: formData.rut,
       phone: formData.telefono,
-      typeFinance: 'FINANCIAMIENTO',
+      typeFinance: "FINANCIAMIENTO",
       email: formData.correo,
       workerType: formData.empleo,
-      salary: parseInt(formData.renta.replace(/\D/g, '')),
+      salary: parseInt(formData.renta.replace(/\D/g, "")),
       startWorkingDate: formData.fechaIngLab,
     };
 
     try {
-
       //const response = await postClientData(submittedData);  // Llamar al servicio de API real
-      const response = {id:1,rut:"23.454.654-6",phone:"879846546",typeFinance: 'FINANCIAMIENTO',email:'email@mail.com',workerType:"conGiro",salary:11155,startWorkingDate:'01/01/1990'};
+      const response = {
+        id: 1,
+        rut: "23.454.654-6",
+        phone: "879846546",
+        typeFinance: "FINANCIAMIENTO",
+        email: "email@mail.com",
+        workerType: "conGiro",
+        salary: 11155,
+        startWorkingDate: "01/01/1990",
+      };
 
       // Verificar que la respuesta tenga el id (suponiendo que está en response.id)
-    if (response && response.id) {      
-      // Guardar el formData actualizado en el localStorage
-      localStorage.setItem('formData', JSON.stringify(response));
-      onNextStep(response);
-      
-    } else {
-      throw new Error('ID no encontrado en la respuesta de la API');
-    }
-  
+      if (response && response.id) {
+        // Guardar el formData actualizado en el localStorage
+        localStorage.setItem("formData", JSON.stringify(response));
+        onNextStep(response);
+      } else {
+        throw new Error("ID no encontrado en la respuesta de la API");
+      }
     } catch (error) {
       // Manejar errores en la API
       setError(error.message);
@@ -78,18 +89,19 @@ const ContactForm = ({ onNextStep }) => {
   return (
     <div>
       {/* Título y subtítulo */}
-      <h1 style={{ fontSize: '18px', fontWeight: 'bold', color: '#004E9C' }}>
+      <h1 style={{ fontSize: "18px", fontWeight: "bold", color: "#004E9C" }}>
         Información de contacto
       </h1>
-      <p style={{ fontSize: '14px' }}>
+      <p style={{ fontSize: "14px" }}>
         Completa tus datos para poder contactarte correctamente
       </p>
 
       <form ref={formRef} onSubmit={handleSubmit} className="mui-form">
-
         {/* Campo de RUT */}
         <div className="formControl-root">
-          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">RUT*</label>
+          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
+            RUT*
+          </label>
           <div className="outlinedInput-root textField-root inputBase-root">
             <input
               name="rut"
@@ -105,7 +117,9 @@ const ContactForm = ({ onNextStep }) => {
 
         {/* Campo de Teléfono */}
         <div className="formControl-root">
-          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">Teléfono*</label>
+          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
+            Teléfono*
+          </label>
           <div className="outlinedInput-root textField-root inputBase-root">
             <input
               type="tel"
@@ -114,7 +128,7 @@ const ContactForm = ({ onNextStep }) => {
               className="form-input"
               value={formData.telefono}
               onChange={handleInputChange}
-              maxLength="17"  // Limitar longitud para el formato de teléfono
+              maxLength="17" // Limitar longitud para el formato de teléfono
               required
             />
           </div>
@@ -122,7 +136,9 @@ const ContactForm = ({ onNextStep }) => {
 
         {/* Campo de Correo Electrónico */}
         <div className="formControl-root">
-          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">Correo Electrónico*</label>
+          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
+            Correo Electrónico*
+          </label>
           <div className="outlinedInput-root textField-root inputBase-root">
             <input
               type="email"
@@ -138,7 +154,9 @@ const ContactForm = ({ onNextStep }) => {
 
         {/* Campo de Tipo de Empleo */}
         <div className="formControl-root">
-          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">Tipo de empleo*</label>
+          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
+            Tipo de empleo*
+          </label>
           <div className="outlinedInput-root textField-root inputBase-root">
             <select
               name="empleo"
@@ -161,7 +179,9 @@ const ContactForm = ({ onNextStep }) => {
 
         {/* Campo de Renta Líquida */}
         <div className="formControl-root">
-          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">Renta líquida*</label>
+          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
+            Renta líquida*
+          </label>
           <div className="outlinedInput-root textField-root inputBase-root">
             <EntradaMoneda
               name="renta"
@@ -176,7 +196,9 @@ const ContactForm = ({ onNextStep }) => {
 
         {/* Campo de Fecha de Ingreso Laboral */}
         <div className="formControl-root">
-          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">Fecha de ingreso laboral*</label>
+          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
+            Fecha de ingreso laboral*
+          </label>
           <div className="outlinedInput-root textField-root inputBase-root">
             <input
               type="date"
@@ -192,12 +214,20 @@ const ContactForm = ({ onNextStep }) => {
 
         {/* Botones de navegación */}
         <div className="navButtonContainer">
-          <button disabled={isLoading} className="atrasButton" onClick={() => navigate(-1)}>
+          <button
+            disabled={isLoading}
+            className="atrasButton"
+            onClick={() => navigate(-1)}
+          >
             Atrás
           </button>
-          {error && <div style={{ color: 'red' }}>{error}</div>}
-          <button type="submit" disabled={isLoading} className="continuarButton">
-            {isLoading ? 'Cargando...' : 'CONTINUAR'}
+          {error && <div style={{ color: "red" }}>{error}</div>}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="continuarButton"
+          >
+            {isLoading ? "Cargando..." : "CONTINUAR"}
           </button>
         </div>
       </form>
