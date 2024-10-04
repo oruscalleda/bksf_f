@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { isMobile } from "react-device-detect";
+
 import logo from "../img/logo.png";
 import financiar from "../img/financiar.png";
 import refinanciar from "../img/refinanciar.png";
@@ -20,13 +22,38 @@ const textContainerStyle = {
   paddingBottom: "5px",
 };
 
-const imageStyle = {
+const imageStyleMobile = {
   width: "91px",
   height: "auto",
   marginTop: "9px",
 };
 
+const imageStyle = {
+  width: "91px",
+  height: "auto",
+  marginTop: "9px",
+  position: "relative",
+  left: "-66px",
+  top: "11px",
+};
+
+
+
 const footerStyle = {
+  backgroundColor: "rgb(90, 160, 227)",
+  borderRadius: "0px 0px 10px 10px",
+  padding: "0 25px 0 10px",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  color: "white",
+  fontSize: "1rem",
+  fontWeight: "normal",
+  flexDirection: "row",
+  width: "100%",
+};
+
+const footerStyleMobile = {
   backgroundColor: "rgb(90, 160, 227)",
   borderRadius: "0px 0px 10px 10px",
   padding: "10px 25px 10px 10px",
@@ -49,6 +76,7 @@ const buttonFooterStyle = {
   fontWeight: "bold",
   color: "white",
   fontSize: "1rem",
+  flexDirection: "column",
 };
 
 const Home = () => {
@@ -114,9 +142,9 @@ const Home = () => {
                     Financiamos hasta el 80% del valor de tu vehículo
                   </p>
                 </div>
-                <img src={financiar} alt="Financiamiento" style={imageStyle} />
+                <img src={financiar} alt="Financiamiento" style={isMobile ? imageStyleMobile : imageStyle} />
               </div>
-              <div style={footerStyle}>
+              <div style={isMobile ? footerStyleMobile : footerStyle}>
                 <p style={{ margin: "18px" }}>
                   ¡No lo pienses más, tu nuevo auto está cada vez más cerca!
                 </p>
@@ -173,7 +201,7 @@ const Home = () => {
                 <img
                   src={refinanciar}
                   alt="Refinanciamiento"
-                  style={imageStyle}
+                  style={isMobile ? imageStyleMobile : imageStyle}
                 />
               </div>
               <div style={footerStyle}>
