@@ -35,9 +35,9 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
   };
   return (
     <div style={{ width: "100%" }}>
-      <h1>Información del crédito</h1>
-      <p>Completa los datos de tu crédito</p>
-      <form>
+      <h1 style={{ marginLeft: "10px" }}>Información del crédito</h1>
+      <p style={{ marginLeft: "10px" }}>Completa los datos de tu crédito</p>
+      <form className='form-container'>
         <div class="formControl-root">
           <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
             Selecciona tu institución*
@@ -139,7 +139,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
             />
           </div>
         </div>
-        <div className="vehiculo-container">
+        <div className="cuotas-container">
           <div className="form-container" style={{ alignContent: "initial" }}>
             <div class="formControl-root">
               <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
