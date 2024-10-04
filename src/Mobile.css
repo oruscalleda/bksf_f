@@ -692,8 +692,8 @@ button[type="submit"] {
 }
 
 .checkmark-circle {
-  width: 110px;
-  height: 110px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background-color: #00a9e3;
   display: flex;
@@ -701,7 +701,7 @@ button[type="submit"] {
   align-items: center;
 }
 
-/* EXITO */
+/* VALIDAR CON AGENTE */
 
 .image-container {
   position: relative;
@@ -763,4 +763,26 @@ p {
 
 .finalize-button:hover {
   background-color: #ddd;
+}
+
+/* EXITO */
+
+.exito-container {
+  min-height: 450px;
+}
+
+.exito-content {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  h1 {
+    text-align: center;
+  }
+  p {
+    text-align: center;
+  }
 }
