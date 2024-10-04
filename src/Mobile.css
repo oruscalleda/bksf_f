@@ -679,8 +679,29 @@ button[type="submit"] {
   width: 50%;
 }
 
+.popup {
+  z-index: 1;
+  position: absolute;
+  margin-right: 20px;
+}
+
+.popup-header {
+  display: flex;
+  a {
+    margin-left: 20px;
+    font-size: 16px;
+  }
+}
+
 .mas-info {
   margin-left: -190px;
+  color: #2e4e9c;
+  text-decoration: underline;
+  cursor: pointer;
+
+  a {
+    pointer-events: auto;
+  }
 }
 
 .cuota {

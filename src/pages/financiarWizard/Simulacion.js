@@ -394,7 +394,7 @@ const Simulacion = ({ onNextStep, onPreviousStep }) => {
                       handlePopupClick();
                     }}
                   >
-                    Cerrar X
+                    <strong>Cerrar X</strong>
                   </a>
                 </div>
                 <h4 style={{ marginBottom: "15px" }}>
