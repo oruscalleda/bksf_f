@@ -754,6 +754,63 @@ button[type="submit"] {
   align-items: center;
 }
 
+/* INFO CREDITO & FILE UPLOADER*/
+
+.info-credito {
+  width: 100%;
+}
+
+.file-loader {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+  width: 100%;
+  margin-left: 10px;
+  margin-top: 20px;
+}
+
+.file-label {
+  font-weight: bolder;
+  font-size: smaller;
+  margin-bottom: 8px;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-button {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 1px solid #007bff;
+  color: #007bff;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.file-button:active {
+  background-color: #0056b3;
+}
+
+.loaded-document {
+  width: 100%;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-file-upload {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+}
+
 /* VALIDAR CON AGENTE */
 
 .image-container {
@@ -812,10 +869,6 @@ p {
   cursor: pointer;
   margin-top: 20px;
   background-color: white;
-}
-
-.finalize-button:hover {
-  background-color: #ddd;
 }
 
 /* EXITO */
