@@ -204,7 +204,7 @@ const Home = () => {
                   style={isMobile ? imageStyleMobile : imageStyle}
                 />
               </div>
-              <div style={footerStyle}>
+              <div style={isMobile ? footerStyleMobile : footerStyle}>
                 <p style={{ margin: "18px" }}>
                   ¡No pierdas tiempo, renueva tu auto con la mejor cuota!
                 </p>
