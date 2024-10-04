@@ -113,7 +113,7 @@ const ConDetalle = ({ steps, currentStep, onChange, onNextStep, onBack, data }) 
                         </select>
                     </div>
                 </div>
-                <div class="formControl-root">
+                <div class="formControl-root" style={{ flexDirection: "row" , alignItems: "center" }}>
                     <label className='inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined'>Monto de la deuda*</label>
                     <div className='outlinedInput-root textField-root inputBase-root'>
                         <EntradaMoneda
@@ -190,7 +190,7 @@ const ConDetalle = ({ steps, currentStep, onChange, onNextStep, onBack, data }) 
                     </div>
                 )}
 
-                <div className='cuotas-container'>
+                <div className='cuotas-container' >
                     <div class="formControl-root">
                         <label className='inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined'>Cuotas pagadas*</label>
                         <div className='outlinedInput-root textField-root inputBase-root'>

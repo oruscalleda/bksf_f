@@ -64,7 +64,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
             </select>
           </div>
         </div>
-        <div class="formControl-root">
+        <div class="formControl-root" style={{ flexDirection: "row", alignItems: "center"}}>
           <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
             Monto que pagaste por el vehículo*
           </label>
@@ -108,6 +108,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
               border: "1px solid #ccc",
               borderRadius: "10px",
               marginTop: "10px",
+              zIndex:2
             }}
           >
             <div className='popup-head'>
@@ -142,7 +143,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
             </p>
           </div>
         )}
-        <div className="cuotas-container">
+        <div className="cuotas-container" style={{ flexDirection: "row"}}>
           <div className="form-container" style={{ alignContent: "initial" }}>
             <div class="formControl-root">
               <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">

@@ -581,8 +581,9 @@ input[type="radio"]:checked + .button-label {
 }
 
 .vehiculo-year-container {
-  width: 100%;
-  margin-right: 60px;
+  width: 49%;
+  position: relative;
+  left: -119px;
 }
 
 .continuarButton::after {
@@ -1620,4 +1621,10 @@ input[type="radio"]:checked + .button-label {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.cuotas-container{
+  width: 90%;
+  position: relative;
+  left: -15px;
 }
