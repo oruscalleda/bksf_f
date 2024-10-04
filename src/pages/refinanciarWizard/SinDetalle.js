@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { isMobile } from "react-device-detect";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import EntradaMoneda from "../../components/EntradaMoneda";
 import YearSelect from "../../components/YearSelect";
@@ -22,9 +23,15 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [showTooltip, setShowTooltip] = useState(false);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
+  };
+
+  const handleTooltipClick = () => {
+    setShowTooltip(!showTooltip);
   };
 
   const handleNextStep = () => {
@@ -36,8 +43,8 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
   return (
     <div style={{ width: "100%" }}>
       <h1 style={{ marginLeft: "10px" }}>Información del crédito</h1>
-      <p style={{ marginLeft: "10px" }}>Completa los datos de tu crédito</p>
-      <form className='form-container'>
+      <p style={{ marginLeft: "10px" }} >Para continuar con tu solicitud necesitamos info de tu crédito</p>
+      <form>
         <div class="formControl-root">
           <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
             Selecciona tu institución*
@@ -68,10 +75,73 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
               id="valor"
               onChange={handleInputChange}
               placeholder="$8.888.888"
-              className="form-input"
+              className="form-input-column"
             />
           </div>
+          <span
+            className="tooltip-trigger"
+            onClick={() => handleTooltipClick()}
+            style={{
+              cursor: "pointer",
+              backgroundColor: "#1C4F97",
+              padding: "5px",
+              borderRadius: "50%",
+              fontSize: "12px",
+              textAlign: "center",
+              color: "white",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "20px",
+              height: "20px",
+            }}
+          >
+            i
+          </span>
         </div>
+
+        {showTooltip && (
+          <div
+            className="popup"
+            style={{
+              padding: "20px",
+              border: "1px solid #ccc",
+              borderRadius: "10px",
+              marginTop: "10px",
+            }}
+          >
+            <div className='popup-head'>
+              <h1 style={{ color: "#2e4e9c", textDecoration: "underline", margin: 0 }}>
+                Monto de la deuda
+              </h1>
+              <a
+                href="#"
+                style={{
+                  color: "#2e4e9c",
+                  /* textDecoration: "underline", */
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  fontWeight: "bold"
+                }}
+                onClick={(event) => {
+                  event.preventDefault(); // Evitar comportamiento predeterminado del enlace
+                  handleTooltipClick(); // Llamar a la función que muestra el popup
+                }}
+              >X Cerrar</a>
+            </div>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Nam a nisl ac enim semper congue nec non mi.
+              Vestibulum ante ipsum primis in faucibus orci luctus et
+              ultrices posuere cubilia curae; Quisque venenatis
+              ornare lacus eget laoreet. Aenean in facilisis dui.
+              Duis a ipsum enim. Aliquam purus diam, lacinia ac
+              ornare in, sollicitudin non felis. Duis quis magna
+              vestibulum dui laoreet rhoncus. Sed et rhoncus elit.
+              Pellentesque auctor eget felis euismod sollicitudin.
+            </p>
+          </div>
+        )}
         <div className="cuotas-container">
           <div className="form-container" style={{ alignContent: "initial" }}>
             <div class="formControl-root">

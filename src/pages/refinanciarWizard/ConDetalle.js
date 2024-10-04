@@ -98,8 +98,8 @@ const ConDetalle = ({ steps, currentStep, onChange, onNextStep, onBack, data }) 
     };
     return (
         <div style={{ width: '100%' }}>
-            <h1 style={{ marginLeft: "10px" }}>Información del crédito</h1>
-            <p style={{ marginLeft: "10px" }} >Para continuar con tu solicitud necesitamos info de tu crédito</p>
+            <h1>Información del crédito</h1>
+            <p>Completa los datos de tu crédito</p>
             <form className='form-container'>
                 <div class="formControl-root">
                     <label className='inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined'>Entidad financiera*</label>
@@ -238,16 +238,10 @@ const ConDetalle = ({ steps, currentStep, onChange, onNextStep, onBack, data }) 
                         </div>
                     </div>
                 </div>
-                <div class="formControl-root file-input-button">
+                <div class="formControl-root">
                     <label className='inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined'>Documento de prepago (opcional)</label>
-                    <div className='outlinedInput-root textField-root inputBase-root file-input-button'>
-                        <input
-                            type="file"
-                            className='form-input-column file-input'
-                            accept=".pdf, .jpg, .png"
-                            onChange={handleFileChange}
-                        ></input>
-                        {error && <div style={{ color: 'red' }}>{error}</div>}
+                    <div className='outlinedInput-root textField-root inputBase-root'>
+                        <input type="file" className='form-input-column' ></input>
                     </div>
                 </div>
             </form>
