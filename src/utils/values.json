@@ -1,0 +1,26 @@
+{
+    "institucion": [
+      { "value": "Forum", "label": "Forum" },
+      { "value": "Santander Consummer", "label": "Santander Consummer" },
+      { "value": "Tanner", "label": "Tanner" },
+      { "value": "Mundo Crédito", "label": "Mundo Crédito" },
+      { "value": "Eurocapital", "label": "Eurocapital" },
+      { "value": "MAF (Mitsui Auto Financial)", "label": "MAF (Mitsui Auto Financial)" },
+      { "value": "Banco Falabella", "label": "Banco Falabella" },
+      { "value": "Banco Scotiabank", "label": "Banco Scotiabank" },
+      { "value": "Gmac", "label": "Gmac" },
+      { "value": "Nuevo Capital", "label": "Nuevo Capital" },
+      { "value": "Astra Abcdin", "label": "Astra Abcdin" },
+      { "value": "Global", "label": "Global" },
+      { "value": "Autofin", "label": "Autofin" },
+      { "value": "Afa (Auto Facil)", "label": "Afa (Auto Facil)" },
+      { "value": "Masfin (Nissan)", "label": "Masfin (Nissan)" },
+      { "value": "Marubeni Credit", "label": "Marubeni Credit" },
+      { "value": "Otra Financiera", "label": "Otra Financiera" }
+    ],
+    "ocupacion": [
+        { "value": "dependiente", "label": "Dependiente" },
+        { "value": "conGiro", "label": "Independiente con giro" },
+        { "value": "boletas", "label": "Independiente con boletos de honorarios" }
+    ]
+  }

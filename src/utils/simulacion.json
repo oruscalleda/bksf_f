@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "titulo":"CREDITO INTELIGENTE 12 meses + 1 de CUOTÓN",
+        "cuotas": 12 ,
+        "valorCuota": 80000 ,
+        "cae": 200000 ,
+        "total": 300000,
+        "cuoton": 56788888
+    },
+    {
+        "id":2,
+        "titulo": "CREDITO CUOTA FIJA - 12 Cuotas",
+        "cuotas": 12 ,
+        "valorCuota": 30000 ,
+        "cae": 300000 ,
+        "total": 300000,
+        "cuoton": null
+    },
+    {
+        "id":3,
+        "titulo": "CREDITO CUOTA FIJA - 24 Cuotas",
+        "cuotas": 22 ,
+        "valorCuota": 100000 ,
+        "cae": 400000 ,
+        "total": 800000,
+        "cuoton": null
+    }
+]
