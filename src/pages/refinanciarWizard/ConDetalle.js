@@ -1,8 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import EntradaMoneda from "../../components/EntradaMoneda";
 import YearSelect from "../../components/YearSelect";
 import values from "../../utils/values.json";
+import FileLoader from "./FileLoader";
+
+import { ReactComponent as CheckMarkIcon } from "../../img/check-mark.svg";
+import { ReactComponent as TrashIcon } from "../../img/trash.svg";
 
 const ConDetalle = ({
   steps,
@@ -16,8 +20,8 @@ const ConDetalle = ({
   const location = useLocation();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [file, setFile] = useState(null);
   const [error, setError] = useState(null);
+  const [loadedFile, setLoadedFile] = useState(null);
 
   const [selectedYear, setSelectedYear] = useState(""); // Estado para el año seleccionado
   const [showTooltip, setShowTooltip] = useState(false);
@@ -51,21 +55,19 @@ const ConDetalle = ({
     const { name, value } = e.target;
     setFormValues((prevData) => ({ ...prevData, [name]: value }));
   };
-
+  
   const handleTooltipClick = () => {
     setShowTooltip(!showTooltip);
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    const fileSize = file.size;
+  const handleLoadFile = (file) => {
+  	const fileSize = file.size;
     const maxSize = 1024 * 1024 * 3; // 3MB
-
     if (fileSize > maxSize) {
       setError(`File is too large. Maximum size is ${maxSize / 1024 / 1024}MB`);
-      setFile(null);
+      setLoadedFile(null);
     } else {
-      setFile(file);
+      setLoadedFile(file);
       setError(null);
     }
   };
@@ -111,7 +113,7 @@ const ConDetalle = ({
     onBack();
   };
   return (
-    <div style={{ width: "100%" }}>
+    <div className="info-credito">
       <h1>Información del crédito</h1>
       <p>Completa los datos de tu crédito</p>
       <form className="form-container">
@@ -134,10 +136,7 @@ const ConDetalle = ({
             </select>
           </div>
         </div>
-        <div
-          class="formControl-root"
-          style={{ flexDirection: "row", alignItems: "center" }}
-        >
+        <div class="formControl-root">
           <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
             Monto de la deuda*
           </label>
@@ -294,14 +293,19 @@ const ConDetalle = ({
             </div>
           </div>
         </div>
-        <div class="formControl-root">
-          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
-            Documento de prepago (opcional)
-          </label>
-          <div className="outlinedInput-root textField-root inputBase-root">
-            <input type="file" className="form-input-column"></input>
+        <FileLoader handleLoadFile={handleLoadFile} />
+        {loadedFile ? (
+          <div className="loaded-document">
+            <CheckMarkIcon fill="#004e9c" width="30" height="30" />
+            {loadedFile.name}
+            <TrashIcon
+              style={{ cursor: "pointer" }}
+              onClick={() => setLoadedFile(null)}
+              width="30"
+              height="30"
+            />
           </div>
-        </div>
+        ) : null}
       </form>
 
       <div className="navButtonContainer">
