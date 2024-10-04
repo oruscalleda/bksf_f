@@ -31,11 +31,6 @@
     border-radius: 0; /* Elimina el borde redondeado en móvil */
   }
 
-  /* .navButtonContainer {
-    display: flex;
-    flex-direction: column;
-  } */
-
   .continuarButton,
   .atrasButton {
     width: 100%;
@@ -549,12 +544,12 @@ input[type="radio"]:checked + .button-label {
   border-color: #007bff;
 }
 
-/* .navButtonContainer {
+.navButtonContainer {
   display: flex;
-  gap: 20px;				   
+  gap: 20px;
   width: 100%;
   max-width: 430px;
-} */
+}
 
 .atrasButton {
   background-color: #ffffff;
@@ -687,6 +682,7 @@ input[type="radio"]:checked + .button-label {
   vertical-align: top;
   margin-bottom: 25px;
   width: 100%;
+  /* cambios */
 }
 
 .formLabel-root {
@@ -820,7 +816,27 @@ input[type="radio"]:checked + .button-label {
   width: 100%;
   height: 100%;
   max-width: 500px;
-  max-height: fit-content;
+  height: fit-content;
+}
+
+.popup-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+  }
 }
 
 .popup-item {
@@ -833,6 +849,16 @@ input[type="radio"]:checked + .button-label {
   p {
     margin: 0;
     text-align: left;
+  }
+
+  .coinsIcon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .carIcon {
+    width: 35px;
+    height: 35px;
   }
 }
 
@@ -985,6 +1011,82 @@ input[type="radio"]:checked + .button-label {
   width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+/* VALIDAR CON AGENTE */
+
+.image-container {
+  position: relative;
+  width: 100%;
+}
+
+.image-container img {
+  max-width: 650px;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+}
+
+.checkmark-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(50%);
+  background-color: white;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.checkmark-icon {
+  width: 100px;
+  height: 100px;
+}
+
+.content-container {
+  padding: 40px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h2 {
+  color: #1a73e8;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.finalize-button {
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  background-color: white;
+}
+
+.finalize-button:hover {
+  background-color: #ddd;
+}
+
+/* EXITO */
+
+.exito-container {
+  min-height: 450px;
+}
+
+.exito-content {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 /*@media only screen and (min-width: 320px) and (max-width: 3840px) and (-webkit-min-device-pixel-ratio: 2) and (min-resolution: 192dpi) {*/
@@ -1426,10 +1528,6 @@ input[type="radio"]:checked + .button-label {
     padding: 20px;
     background-color: #e1f0fa;
     width: 100%;
-  }
-
-  .card-content {
-    display: flex;
   }
 
   .card-content > h1 {
