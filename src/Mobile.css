@@ -254,12 +254,12 @@ p {
   background-color: #e1f0fa;
 }
 
-.home-button>h1 {
+.home-button > h1 {
   font-size: 18px;
   color: #004e9c;
 }
 
-.home-button>p {
+.home-button > p {
   font-size: 12px !important;
   font-weight: normal;
   color: black;
@@ -276,7 +276,7 @@ p {
   flex-direction: column;
 }
 
-.home-button-footer>p {
+.home-button-footer > p {
   margin-left: 50px;
   margin-top: 15px;
 }
@@ -582,7 +582,7 @@ button[type="submit"] {
 
 .card-body {
   padding: 20px;
-  background-color: #E1F0FA;
+  background-color: #e1f0fa;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -595,11 +595,11 @@ button[type="submit"] {
   flex-direction: column;
 }
 
-.card-content>div {
+.card-content > div {
   width: 100%;
 }
 
-.card-content>h1 {
+.card-content > h1 {
   padding: 0 10px 0 0;
   margin: 0;
 }

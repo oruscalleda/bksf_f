@@ -1623,7 +1623,7 @@ input[type="radio"]:checked + .button-label {
   align-items: center;
 }
 
-.cuotas-container{
+.cuotas-container {
   width: 90%;
   position: relative;
   left: -15px;
