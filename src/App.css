@@ -850,6 +850,16 @@ input[type="radio"]:checked + .button-label {
     margin: 0;
     text-align: left;
   }
+
+  .coinsIcon {
+    width: 35px;
+    height: 35px;
+  }
+
+  .carIcon {
+    width: 35px;
+    height: 35px;
+  }
 }
 
 .extra-info {

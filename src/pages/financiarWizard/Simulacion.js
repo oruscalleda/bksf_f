@@ -419,14 +419,14 @@ const Simulacion = ({ onNextStep, onPreviousStep }) => {
                   </p>
                 </div>
                 <div className="popup-item">
-                  <CoinsIcon width="35" height="35" />
+                  <CoinsIcon className="coinsIcon" />
                   <p>
                     <strong>Financiamiento:</strong> Autos con 2 años de
                     antigüedad máxima
                   </p>
                 </div>
                 <div className="popup-item">
-                  <CarIcon width="35" height="35" />
+                  <CarIcon className="carIcon" />
                   <p>
                     <strong>Cuotas:</strong> Al final del periodo renueva tu
                     auto o refinancia el cuoton*
