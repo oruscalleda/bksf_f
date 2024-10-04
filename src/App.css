@@ -592,12 +592,6 @@ input[type="radio"]:checked + .button-label {
   justify-content: center;
 }
 
-.vehiculo-year-container {
-  width: 49%;
-  position: relative;
-  left: -119px;
-}
-
 .continuarButton::after {
   content: ">";
   position: absolute;
@@ -618,9 +612,10 @@ input[type="radio"]:checked + .button-label {
 
 .form-input {
   grid-column: span 1;
-  width: 430px;
+  /* width: 430px; */
+  width: 100%;
   padding: 12px 20px;
-  margin: 8px 8px;
+  /* margin: 8px 8px; */
   display: inline-block;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -642,7 +637,7 @@ input[type="radio"]:checked + .button-label {
   grid-column: span 1;
   width: 100% !important;
   padding: 12px 20px;
-  margin: 8px 8px;
+  /* margin: 8px 8px; */
   display: inline-block;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -1147,6 +1142,12 @@ p {
   justify-self: end;
   width: 80%;
   margin-bottom: 40px;
+}
+
+.vehiculo-year-container {
+  position: relative;
+  left: -25%;
+  width: 50%;
 }
 
 /*@media only screen and (min-width: 320px) and (max-width: 3840px) and (-webkit-min-device-pixel-ratio: 2) and (min-resolution: 192dpi) {*/
@@ -1680,10 +1681,4 @@ input[type="radio"]:checked + .button-label {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.cuotas-container {
-  width: 90%;
-  position: relative;
-  left: -15px;
 }

@@ -18,24 +18,20 @@ const Card = ({ option, handlePopupClick }) => {
 
   const navigate = useNavigate();
 
-  // const [showPopup, setShowPopup] = useState(false);
-  // const handlePopupClick = () => {
-  //   setShowPopup(!showPopup);
-  // };
   const handleTooltipClick = () => {
     setShowTooltip(!showTooltip);
   };
-  const handleCostoTooltipClick = () => {
-    setShowCostoTooltip(!showCostoTooltip);
-  };
+  // const handleCostoTooltipClick = () => {
+  //   setShowCostoTooltip(!showCostoTooltip);
+  // };
 
-  const handleValorTooltipClick = () => {
-    setShowValorTooltip(!showValorTooltip);
-  };
+  // const handleValorTooltipClick = () => {
+  //   setShowValorTooltip(!showValorTooltip);
+  // };
 
-  const handleCAETooltipClick = () => {
-    setShowCAETooltip(!showCAETooltip);
-  };
+  // const handleCAETooltipClick = () => {
+  //   setShowCAETooltip(!showCAETooltip);
+  // };
 
   // Función para navegar a la pantalla de éxito
   const handleLoQuieroClick = () => {
@@ -78,31 +74,6 @@ const Card = ({ option, handlePopupClick }) => {
           </a>
         </p>
       </div>
-      {/* {showPopup && (
-        <div
-          className="popup"
-          style={{
-            padding: "20px",
-            backgroundColor: "#f9f9f9",
-            border: "1px solid #ccc",
-            borderRadius: "10px",
-            marginTop: "10px",
-          }}
-        >
-          <h1 style={{ color: "#2e4e9c", textDecoration: "underline" }}>
-            CREDITO INTELIGENTE
-          </h1>
-          <button onClick={handlePopupClick}>Cerrar</button>
-          <p>Plazo: 24 + Cuoton o 36 + Cuoton*</p>
-          <p>Tasa: Fija mensual</p>
-          <p>Pie: Mínimo 20% | Máximo 30%</p>
-          <p>Financiamiento: Autos con 2 años de antigüedad máxima</p>
-          <p>
-            Cuotas: Al final del periodo renueva tu auto o refinancia el cuoton*
-          </p>
-        </div>
-        // <Popup />
-      )} */}
 
       <div
         className="card-body"
@@ -210,22 +181,26 @@ const Card = ({ option, handlePopupClick }) => {
             >
               <div style={{ display: "flex", alignItems: "center" }}>
                 <p
-                  style={!isMobile ? {
-                    fontSize: "14px",
-                    color: "#000",
-                    fontWeight: "bold",
-                    marginRight: "10px",
-                  }:{
-                    fontSize: "14px",
-                    color: "#000",
-                    fontWeight: "bold",
-                  }}
+                  style={
+                    !isMobile
+                      ? {
+                          fontSize: "14px",
+                          color: "#000",
+                          fontWeight: "bold",
+                          marginRight: "10px",
+                        }
+                      : {
+                          fontSize: "14px",
+                          color: "#000",
+                          fontWeight: "bold",
+                        }
+                  }
                 >
                   Cuotón (VFMG)
                 </p>
                 <span
                   className="tooltip-trigger"
-                  onClick={() => handleTooltipClick()}
+                  onClick={handleTooltipClick}
                   style={{
                     cursor: "pointer",
                     backgroundColor: "#1C4F97",
@@ -246,15 +221,31 @@ const Card = ({ option, handlePopupClick }) => {
               </div>
               {showTooltip && (
                 <div
-                  className="tooltip"
+                  className="popup"
+                  style={{ borderRadius: "20px", padding: "10px" }}
                 >
-                  <p>
-                    Al financiar un vehículo con el crédito automotriz
-                    inteligente, también tienes la opción de quedarte con él
-                    después de haber pagado todas las cuotas. Para hacerlo,
-                    tienes que pagar un cuotón que equivale al 50% o 40% del
-                    valor total del auto cuando estaba nuevo.
-                  </p>
+                  <div
+                    className="popup-header"
+                    style={{ marginBottom: "10px" }}
+                  >
+                    <h1 style={{ color: "#2e4e9c" }}>
+                      <strong>CREDITO INTELIGENTE</strong>
+                    </h1>
+                    <a
+                      style={{ color: "#2e4e9c" }}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        handleTooltipClick();
+                      }}
+                    >
+                      <strong>Cerrar X</strong>
+                    </a>
+                  </div>
+                  Al financiar un vehículo con el crédito automotriz
+                  inteligente, también tienes la opción de quedarte con él
+                  después de haber pagado todas las cuotas. Para hacerlo, tienes
+                  que pagar un cuotón que equivale al 50% o 40% del valor total
+                  del auto cuando estaba nuevo.
                 </div>
               )}
               <p
@@ -429,7 +420,7 @@ const Simulacion = ({ onNextStep, onPreviousStep }) => {
                       handlePopupClick();
                     }}
                   >
-                    Cerrar X
+                    <strong>Cerrar X</strong>
                   </a>
                 </div>
                 <h4 style={{ marginBottom: "15px" }}>
@@ -454,14 +445,14 @@ const Simulacion = ({ onNextStep, onPreviousStep }) => {
                   </p>
                 </div>
                 <div className="popup-item">
-                  <CoinsIcon width="35" height="35" />
+                  <CoinsIcon className="coinsIcon" width="35" height="35" />
                   <p>
                     <strong>Financiamiento:</strong> Autos con 2 años de
                     antigüedad máxima
                   </p>
                 </div>
                 <div className="popup-item">
-                  <CarIcon width="35" height="35" />
+                  <CarIcon className="carIcon" width="35" height="35" />
                   <p>
                     <strong>Cuotas:</strong> Al final del periodo renueva tu
                     auto o refinancia el cuoton*

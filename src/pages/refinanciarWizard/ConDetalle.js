@@ -55,13 +55,13 @@ const ConDetalle = ({
     const { name, value } = e.target;
     setFormValues((prevData) => ({ ...prevData, [name]: value }));
   };
-  
+
   const handleTooltipClick = () => {
     setShowTooltip(!showTooltip);
   };
 
   const handleLoadFile = (file) => {
-  	const fileSize = file.size;
+    const fileSize = file.size;
     const maxSize = 1024 * 1024 * 3; // 3MB
     if (fileSize > maxSize) {
       setError(`File is too large. Maximum size is ${maxSize / 1024 / 1024}MB`);
@@ -150,27 +150,27 @@ const ConDetalle = ({
               placeholder="$8.888.888"
               className="form-input-column"
             />
+            <span
+              className="tooltip-trigger"
+              onClick={() => handleTooltipClick()}
+              style={{
+                cursor: "pointer",
+                backgroundColor: "#1C4F97",
+                padding: "5px",
+                borderRadius: "50%",
+                fontSize: "12px",
+                textAlign: "center",
+                color: "white",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "20px",
+                height: "20px",
+              }}
+            >
+              i
+            </span>
           </div>
-          <span
-            className="tooltip-trigger"
-            onClick={() => handleTooltipClick()}
-            style={{
-              cursor: "pointer",
-              backgroundColor: "#1C4F97",
-              padding: "5px",
-              borderRadius: "50%",
-              fontSize: "12px",
-              textAlign: "center",
-              color: "white",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "20px",
-              height: "20px",
-            }}
-          >
-            i
-          </span>
         </div>
 
         {showTooltip && (
@@ -181,9 +181,10 @@ const ConDetalle = ({
               border: "1px solid #ccc",
               borderRadius: "10px",
               marginTop: "10px",
+              zIndex: 2,
             }}
           >
-            <div className="popup-head">
+            <div className="popup-header">
               <h1
                 style={{
                   color: "#2e4e9c",

@@ -43,7 +43,9 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
   return (
     <div style={{ width: "100%" }}>
       <h1 style={{ marginLeft: "10px" }}>Información del crédito</h1>
-      <p style={{ marginLeft: "10px" }} >Para continuar con tu solicitud necesitamos info de tu crédito</p>
+      <p style={{ marginLeft: "10px" }}>
+        Para continuar con tu solicitud necesitamos info de tu crédito
+      </p>
       <form>
         <div class="formControl-root">
           <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
@@ -64,7 +66,10 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
             </select>
           </div>
         </div>
-        <div class="formControl-root" style={{ flexDirection: "row", alignItems: "center"}}>
+        <div
+          class="formControl-root"
+          style={{ flexDirection: "row", alignItems: "center" }}
+        >
           <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
             Monto que pagaste por el vehículo*
           </label>
@@ -108,11 +113,17 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
               border: "1px solid #ccc",
               borderRadius: "10px",
               marginTop: "10px",
-              zIndex:2
+              zIndex: 2,
             }}
           >
-            <div className='popup-head'>
-              <h1 style={{ color: "#2e4e9c", textDecoration: "underline", margin: 0 }}>
+            <div className="popup-header">
+              <h1
+                style={{
+                  color: "#2e4e9c",
+                  textDecoration: "underline",
+                  margin: 0,
+                }}
+              >
                 Monto de la deuda
               </h1>
               <a
@@ -122,28 +133,29 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
                   /* textDecoration: "underline", */
                   cursor: "pointer",
                   textDecoration: "none",
-                  fontWeight: "bold"
+                  fontWeight: "bold",
                 }}
                 onClick={(event) => {
                   event.preventDefault(); // Evitar comportamiento predeterminado del enlace
                   handleTooltipClick(); // Llamar a la función que muestra el popup
                 }}
-              >X Cerrar</a>
+              >
+                X Cerrar
+              </a>
             </div>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Nam a nisl ac enim semper congue nec non mi.
-              Vestibulum ante ipsum primis in faucibus orci luctus et
-              ultrices posuere cubilia curae; Quisque venenatis
-              ornare lacus eget laoreet. Aenean in facilisis dui.
-              Duis a ipsum enim. Aliquam purus diam, lacinia ac
-              ornare in, sollicitudin non felis. Duis quis magna
-              vestibulum dui laoreet rhoncus. Sed et rhoncus elit.
-              Pellentesque auctor eget felis euismod sollicitudin.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam a
+              nisl ac enim semper congue nec non mi. Vestibulum ante ipsum
+              primis in faucibus orci luctus et ultrices posuere cubilia curae;
+              Quisque venenatis ornare lacus eget laoreet. Aenean in facilisis
+              dui. Duis a ipsum enim. Aliquam purus diam, lacinia ac ornare in,
+              sollicitudin non felis. Duis quis magna vestibulum dui laoreet
+              rhoncus. Sed et rhoncus elit. Pellentesque auctor eget felis
+              euismod sollicitudin.
             </p>
           </div>
         )}
-        <div className="cuotas-container" style={{ flexDirection: "row"}}>
+        <div className="cuotas-container" style={{ flexDirection: "row" }}>
           <div className="form-container" style={{ alignContent: "initial" }}>
             <div class="formControl-root">
               <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
