@@ -35,8 +35,7 @@ const Card = ({ option, handlePopupClick }) => {
 
   // Función para navegar a la pantalla de éxito
   const handleLoQuieroClick = () => {
-    console.log("Botón LO QUIERO presionado");
-    navigate("/exito"); // Navega a la ruta de éxito
+    navigate("/ValidarConAgente"); // Navega a la ruta de éxito
   };
 
   return (
@@ -283,30 +282,37 @@ const Card = ({ option, handlePopupClick }) => {
 };
 
 const Simulacion = ({ onNextStep, onPreviousStep }) => {
-  const existingData = JSON.parse(localStorage.getItem("formData"));
+  // Recuperar los datos de formData de localStorage
+  const existingData = JSON.parse(localStorage.getItem("formData")) || {};
+
   const [dataS, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showOptions, setShowOptions] = useState(false);
-
-  const handleCalculate = async () => {
-    setData(simulacionData); // Set the data from the imported JSON file
-    setShowOptions(true);
-  };
-
   const [showPopup, setShowPopup] = useState(false);
+
+  // Manejar el popup
   const handlePopupClick = () => {
     setShowPopup(!showPopup);
   };
 
+  // Función para cargar la simulación (en este caso cargamos desde un archivo JSON)
+  const handleCalculate = async () => {
+    setData(simulacionData); // Establecer los datos desde el JSON
+    setShowOptions(true);
+  };
+
+  // Efecto para cargar los datos de simulación cuando el componente se monta
   useEffect(() => {
     handleCalculate();
   }, []);
 
+  // Si está cargando, mostramos un mensaje de carga
   if (loading) {
     return <div>Loading...</div>;
   }
 
+  // Si hay un error, lo mostramos
   if (error) {
     return <div>Error: {error}</div>;
   }

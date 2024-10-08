@@ -2,41 +2,85 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import EntradaMoneda from "../../components/EntradaMoneda";
 import values from "../../utils/values.json";
-import { formatRUT, formatPhone, getCurrentDate } from "../../utils/formUtils";
+import { formatRUT, formatPhone, getCurrentDate, isValidRUT } from "../../utils/formUtils";
 import { saveToLocalStorage } from "../../services/storageService";
 import { postClientData } from "../../services/apiService";
 
-const ContactForm = ({ onNextStep }) => {
+const ContactForm = ({ onNextStep, data }) => {
   const formRef = useRef(null);
   const navigate = useNavigate();
-
-  // Estado del formulario
+  // Inicializar formData con los valores de data si es que existen
   const [formData, setFormData] = useState({
-    rut: "",
-    telefono: "+56 9",
-    correo: "",
-    empleo: "",
-    renta: "",
-    fechaIngLab: "",
+    rut: data?.rut || "",
+    phone: data?.phone || "+56 9",
+    email: data?.email || "",
+    workerType: data?.workerType || "",
+    salary: data?.salary || "",
+    startWorkingDate: data?.startWorkingDate || "",
   });
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Almacenar los datos en localStorage cuando cambien
+  // Guardar datos en localStorage cuando cambien
   useEffect(() => {
     saveToLocalStorage("formData", formData);
   }, [formData]);
 
-  // Manejar los cambios en los campos del formulario
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    // Formatear los valores correspondientes
     const formattedValue =
       name === "rut"
         ? formatRUT(value)
-        : name === "telefono"
-        ? formatPhone(value)
-        : value;
-    setFormData((prevData) => ({ ...prevData, [name]: formattedValue }));
+        : name === "phone"
+          ? formatPhone(value)
+          : name === "salary" // Si es el campo salary, asegúrate de que sea numérico
+            ? value.replace(/\D/g, '') // Deja solo números
+            : value;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: formattedValue
+    }));
+  };
+
+  // Validar campos obligatorios
+  const validateForm = () => {
+    if (!formData.rut || !isValidRUT(formData.rut)) {
+      return "Por favor, ingresa un RUT válido.";
+    }
+    if (!formData.phone) {
+      return "Por favor, ingresa un número de teléfono válido.";
+    }
+    if (!formData.email) {
+      return "Por favor, ingresa un correo electrónico válido.";
+    }
+    if (!formData.workerType) {
+      return "Por favor, selecciona un tipo de empleo.";
+    }
+
+
+
+    if (!formData.salary) {
+      return "Por favor, ingresa tu renta líquida.";
+    }
+
+    // Verificar si salary es una cadena antes de usar replace
+    const salaryValue = parseFloat(
+      String(formData.salary).replace(/\D/g, '')  // Convertir a cadena y eliminar caracteres no numéricos
+    );
+    if (salaryValue < 600000) {  // Verificar el valor mínimo
+      return "La renta mínima debe ser al menos $600.000.";
+    }
+
+
+
+    if (!formData.startWorkingDate) {
+      return "Por favor, ingresa la fecha de ingreso laboral.";
+    }
+    return null; // Sin errores
   };
 
   // Enviar datos del formulario
@@ -45,41 +89,47 @@ const ContactForm = ({ onNextStep }) => {
     setIsLoading(true);
     setError(null);
 
+    // Validar el formulario antes de enviar
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      setIsLoading(false);
+      return;
+    }
+
+    // Verificar si salary es una cadena antes de usar replace
+    const salaryAsString = typeof formData.salary === 'string'
+      ? formData.salary.replace(/\D/g, '')  // Si es cadena, usar replace para eliminar caracteres no numéricos
+      : formData.salary;  // Si ya es un número, dejarlo tal cual
+
     // Preparar los datos para enviarlos
     const submittedData = {
-      rut: formData.rut,
-      phone: formData.telefono,
+      ...formData,  // Incluir los datos actuales del formulario
       typeFinance: "FINANCIAMIENTO",
-      email: formData.correo,
-      workerType: formData.empleo,
-      salary: parseInt(formData.renta.replace(/\D/g, "")),
-      startWorkingDate: formData.fechaIngLab,
+      salary: parseInt(salaryAsString), // Asegurarse de que salary sea un número
     };
 
     try {
-      //const response = await postClientData(submittedData);  // Llamar al servicio de API real
+      const response = await postClientData(submittedData);  // Llamar al servicio de API real
+
+      /* Simular respuesta del servidor
       const response = {
         id: 1,
-        rut: "23.454.654-6",
-        phone: "879846546",
-        typeFinance: "FINANCIAMIENTO",
-        email: "email@mail.com",
-        workerType: "conGiro",
-        salary: 11155,
-        startWorkingDate: "01/01/1990",
-      };
+        rut: submittedData.rut,
+        phone: submittedData.phone,
+        typeFinance: submittedData.typeFinance,
+        email: submittedData.email,
+        workerType: submittedData.workerType,
+        salary: submittedData.salary,
+        startWorkingDate: submittedData.startWorkingDate,
+      }; */
 
-      // Verificar que la respuesta tenga el id (suponiendo que está en response.id)
-      if (response && response.id) {
-        // Guardar el formData actualizado en el localStorage
-        localStorage.setItem("formData", JSON.stringify(response));
-        onNextStep(response);
-      } else {
-        throw new Error("ID no encontrado en la respuesta de la API");
-      }
+      // Guardar la respuesta en localStorage y avanzar al siguiente paso
+      localStorage.setItem("formData", JSON.stringify(response));
+      onNextStep(response);  // Pasar los datos como objeto, no como cadena JSON
+
     } catch (error) {
-      // Manejar errores en la API
-      setError(error.message);
+      setError("Error al enviar los datos, por favor inténtalo de nuevo.");
       console.error("Error al enviar los datos:", error);
     } finally {
       setIsLoading(false);
@@ -123,12 +173,12 @@ const ContactForm = ({ onNextStep }) => {
           <div className="outlinedInput-root textField-root inputBase-root">
             <input
               type="tel"
-              name="telefono"
+              name="phone"
               placeholder="+56 9 999 999 99"
               className="form-input"
-              value={formData.telefono}
+              value={formData.phone}
               onChange={handleInputChange}
-              maxLength="17" // Limitar longitud para el formato de teléfono
+              maxLength="17"
               required
             />
           </div>
@@ -142,10 +192,10 @@ const ContactForm = ({ onNextStep }) => {
           <div className="outlinedInput-root textField-root inputBase-root">
             <input
               type="email"
-              name="correo"
+              name="email"
               placeholder="Ej: correo@mail.com"
               className="form-input"
-              value={formData.correo}
+              value={formData.email}
               onChange={handleInputChange}
               required
             />
@@ -159,9 +209,9 @@ const ContactForm = ({ onNextStep }) => {
           </label>
           <div className="outlinedInput-root textField-root inputBase-root">
             <select
-              name="empleo"
+              name="workerType"
               className="form-input"
-              value={formData.empleo}
+              value={formData.workerType}
               onChange={handleInputChange}
               required
             >
@@ -184,10 +234,12 @@ const ContactForm = ({ onNextStep }) => {
           </label>
           <div className="outlinedInput-root textField-root inputBase-root">
             <EntradaMoneda
-              name="renta"
+              style={{ width: '100%', maxWidth: '430px', height: '60px', padding: '12px 20px' }}
+              name="salary"
               placeholder="Ej: 900.000"
+              min={600000}
               className="form-input"
-              value={formData.renta}
+              value={formData.salary}
               onChange={handleInputChange}
               required
             />
@@ -202,15 +254,30 @@ const ContactForm = ({ onNextStep }) => {
           <div className="outlinedInput-root textField-root inputBase-root">
             <input
               type="date"
-              name="fechaIngLab"
+              name="startWorkingDate"
               className="form-input"
-              value={formData.fechaIngLab}
+              value={formData.startWorkingDate}
               onChange={handleInputChange}
               max={getCurrentDate()}
               required
             />
           </div>
         </div>
+
+        {/* Mostrar mensaje de error si existe */}
+        {error && (
+          <div style={{
+            color: "red",
+            fontSize: "14px",
+            marginBottom: "10px",
+            border: "1px solid red",
+            padding: "10px",
+            borderRadius: "5px",
+            backgroundColor: "#fdd"
+          }}>
+            {error}
+          </div>
+        )}
 
         {/* Botones de navegación */}
         <div className="navButtonContainer">
@@ -221,7 +288,7 @@ const ContactForm = ({ onNextStep }) => {
           >
             Atrás
           </button>
-          {error && <div style={{ color: "red" }}>{error}</div>}
+          {/* {error && <div style={{ color: "red" }}>{error}</div>} */}
           <button
             type="submit"
             disabled={isLoading}

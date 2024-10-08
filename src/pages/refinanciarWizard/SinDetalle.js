@@ -78,6 +78,22 @@ const SinDetalle = ({ onNextStep, onPreviousStep, data, onBack }) => {
     setFormData((prevData) => ({ ...prevData, caryear: year }));
   };
 
+  const getYearRange = () => {
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+    const startYear = currentMonth >= 8 ? currentYear - 7 : currentYear - 8; // Rango desde hace 7 años
+    const endYear = currentYear + 1; // Hasta el próximo año
+    return Array.from(
+      { length: endYear - startYear + 1 },
+      (_, i) => endYear - i
+    ); // Invertir el orden
+  };
+
+  const handleYearChange = (year) => {
+    setSelectedYear(year);
+    setFormValues((formValues) => ({ ...formValues, year: year }));
+  };
+
   const handleTooltipClick = () => {
     setShowTooltip(!showTooltip);
   };

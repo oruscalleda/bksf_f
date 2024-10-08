@@ -15,7 +15,7 @@ import FinanciarWizard from "./pages/financiarWizard/FinanciarWizard";
 import RefinanciarWizard from "./pages/refinanciarWizard/RefinanciarWizard";
 import ConDetalle from "./pages/refinanciarWizard/ConDetalle";
 import SinDetalle from "./pages/refinanciarWizard/SinDetalle";
-import ValidarRenta from "./pages/ValidarRenta/ValidarRenta";
+import ValidarRenta from "./pages/ValidarRentaWizard/ValidarRenta";
 import Simulacion from "./pages/financiarWizard/Simulacion";
 import InfoCredito from "./pages/refinanciarWizard/InformacionCredito";
 import LoadingScreen from "./pages/financiarWizard/Loading";

@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import { isMobile } from "react-device-detect";
 
-const FileLoader = ({ handleLoadFile }) => {
+const MAX_FILE_SIZE = 1024 * 1024 * 3; // 3MB
+
+const FileLoader = ({ handleLoadFile, handleError }) => {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     const fileSize = file.size;
-    const maxSize = 1024 * 1024 * 3; // 3MB
 
-    if (fileSize > maxSize) {
-      alert(`File is too large. Maximum size is ${maxSize}`);
-      // setError(`File is too large. Maximum size is ${maxSize / 1024 / 1024}MB`);
-    } else {
-      handleLoadFile(file);
-      // setError(null);
+    try {
+      if (fileSize > MAX_FILE_SIZE) {
+        handleError("Archivo demasiado grande. \nEl tamaño maximo es de 3MB");
+      } else {
+        handleLoadFile(file);
+        handleError(null);
+      }
+    } catch (error) {
+      handleError(`Error loading the file. ${error}`);
     }
   };
 
