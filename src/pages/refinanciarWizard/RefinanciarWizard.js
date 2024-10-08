@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import StepNav from "../StepNav";
 import FormContacto from "./FormContacto";
-import ValidarRenta from "../ValidarRenta/ValidarRenta";
+import ValidarRenta from "../ValidarRentaWizard/ValidarRenta";
 import InfoCredito from "./InformacionCredito";
 import logo from "../../img/logo.png";
 

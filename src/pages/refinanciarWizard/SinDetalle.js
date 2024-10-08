@@ -24,10 +24,27 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
   const [error, setError] = useState(null);
 
   const [showTooltip, setShowTooltip] = useState(false);
+  const [selectedYear, setSelectedYear] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
+  };
+
+  const getYearRange = () => {
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+    const startYear = currentMonth >= 8 ? currentYear - 7 : currentYear - 8; // Rango desde hace 7 años
+    const endYear = currentYear + 1; // Hasta el próximo año
+    return Array.from(
+      { length: endYear - startYear + 1 },
+      (_, i) => endYear - i
+    ); // Invertir el orden
+  };
+
+  const handleYearChange = (year) => {
+    setSelectedYear(year);
+    setFormValues((formValues) => ({ ...formValues, year: year }));
   };
 
   const handleTooltipClick = () => {
@@ -155,6 +172,22 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
             </p>
           </div>
         )}
+
+<div class="formControl-root">
+          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
+            Total del pie*
+          </label>
+          <div className="outlinedInput-root textField-root inputBase-root">
+            <EntradaMoneda
+              id="totalPie"
+              name="totalPie"
+              value={formValues.totalPie}
+              onChange={handleInputChange}
+              placeholder="$8.888.888"
+              className="form-input"
+            />
+          </div>
+        </div>
         <div className="cuotas-container" style={{ flexDirection: "row" }}>
           <div className="form-container" style={{ alignContent: "initial" }}>
             <div class="formControl-root">
@@ -192,21 +225,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
             </div>
           </div>
         </div>
-        <div class="formControl-root">
-          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
-            Total del pie*
-          </label>
-          <div className="outlinedInput-root textField-root inputBase-root">
-            <EntradaMoneda
-              id="totalPie"
-              name="totalPie"
-              value={formValues.totalPie}
-              onChange={handleInputChange}
-              placeholder="$8.888.888"
-              className="form-input"
-            />
-          </div>
-        </div>
+
         <div class="formControl-root">
           <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
             Valor cuota mensual*
@@ -264,11 +283,21 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
               Año del vehículo*
             </label>
             <div className="outlinedInput-root textField-root inputBase-root">
-              <YearSelect
-                value={formValues.year}
-                startYear={1960}
+            <select
+                name="anno"
                 className="form-input-column"
-              />
+                onChange={(e) => handleYearChange(e.target.value)}
+                value={selectedYear} // Vincular el valor con el estado
+              >
+                <option value="" disabled hidden>
+                  Seleccionar año
+                </option>
+                {getYearRange().map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>

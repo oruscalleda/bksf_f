@@ -60,16 +60,12 @@ const ConDetalle = ({
     setShowTooltip(!showTooltip);
   };
 
+  const handleError = (error) => {
+    setError(error);
+  };
+
   const handleLoadFile = (file) => {
-    const fileSize = file.size;
-    const maxSize = 1024 * 1024 * 3; // 3MB
-    if (fileSize > maxSize) {
-      setError(`File is too large. Maximum size is ${maxSize / 1024 / 1024}MB`);
-      setLoadedFile(null);
-    } else {
-      setLoadedFile(file);
-      setError(null);
-    }
+    setLoadedFile(file);
   };
 
   const handleSubmit = async (event) => {
@@ -233,16 +229,7 @@ const ConDetalle = ({
               <input type="text" className="form-input-column"></input>
             </div>
           </div>
-          <div class="formControl-root">
-            <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
-              Cuotas totales*
-            </label>
-            <div className="outlinedInput-root textField-root inputBase-root">
-              <input type="text" className="form-input-column"></input>
-            </div>
-          </div>
-        </div>
-        <div className="vehiculo-container">
+
           <div class="formControl-root">
             <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
               Marca*
@@ -254,6 +241,16 @@ const ConDetalle = ({
                 name="marca"
                 className="form-input-column"
               ></input>
+            </div>
+          </div>
+        </div>
+        <div className="vehiculo-container">
+          <div class="formControl-root">
+            <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
+              Cuotas totales*
+            </label>
+            <div className="outlinedInput-root textField-root inputBase-root">
+              <input type="text" className="form-input-column"></input>
             </div>
           </div>
           <div class="formControl-root">
@@ -270,43 +267,48 @@ const ConDetalle = ({
             </div>
           </div>
         </div>
-        <div className="vehiculo-year-container">
-          <div class="formControl-root">
-            <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
-              Año del vehículo*
-            </label>
-            <div className="outlinedInput-root textField-root inputBase-root">
-              <select
-                name="anno"
-                className="form-input-column"
-                onChange={(e) => handleYearChange(e.target.value)}
-                value={selectedYear} // Vincular el valor con el estado
-              >
-                <option value="" disabled hidden>
-                  Seleccionar año
+
+        <div class="formControl-root">
+          <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
+            Año del vehículo*
+          </label>
+          <div className="outlinedInput-root textField-root inputBase-root">
+            <select
+              name="anno"
+              className="form-input-column"
+              onChange={(e) => handleYearChange(e.target.value)}
+              value={selectedYear} // Vincular el valor con el estado
+            >
+              <option value="" disabled hidden>
+                Seleccionar año
+              </option>
+              {getYearRange().map((year) => (
+                <option key={year} value={year}>
+                  {year}
                 </option>
-                {getYearRange().map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
-              </select>
-            </div>
+              ))}
+            </select>
           </div>
         </div>
-        <FileLoader handleLoadFile={handleLoadFile} />
-        {loadedFile ? (
-          <div className="loaded-document">
-            <CheckMarkIcon fill="#004e9c" width="30" height="30" />
-            {loadedFile.name}
-            <TrashIcon
-              style={{ cursor: "pointer" }}
-              onClick={() => setLoadedFile(null)}
-              width="30"
-              height="30"
-            />
-          </div>
-        ) : null}
+        <FileLoader handleLoadFile={handleLoadFile} handleError={handleError} />
+        <div className="loaded-document">
+          {loadedFile && !error ? (
+            <>
+              <CheckMarkIcon fill="#004e9c" width="30" height="30" />
+              <span>{loadedFile.name}</span>
+              <TrashIcon
+                style={{ cursor: "pointer" }}
+                onClick={() => setLoadedFile(null)}
+                width="30"
+                height="30"
+              />
+            </>
+          ) : (
+            <span style={{ whiteSpace: "pre-line", textAlign: "center" }}>
+              {error}
+            </span>
+          )}
+        </div>
       </form>
 
       <div className="navButtonContainer">

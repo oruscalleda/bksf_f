@@ -79,7 +79,6 @@ header {
   display: block !important;
   align-items: center;
   margin-bottom: 20px;
-  margin-right: -25px;
   width: 100%;
 }
 
@@ -219,6 +218,7 @@ p {
   flex-direction: row;
   align-content: center;
   justify-content: space-between;
+  position: relative;
 
   &-text {
     display: flex;
@@ -228,6 +228,12 @@ p {
     flex: 1 1 0%;
     text-align: left;
     margin-left: 20px;
+  }
+}
+
+.card-top-text {
+  p {
+    width: 70%;
   }
 }
 
@@ -645,7 +651,6 @@ button[type="submit"] {
   text-align: center;
   border-radius: 50%;
   background-color: #1c4f97;
-  margin-left: 5px;
   color: white;
   font-size: 14;
   font-weight: 700;
@@ -766,6 +771,11 @@ button[type="submit"] {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  span {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 }
 
 .mobile-file-upload {

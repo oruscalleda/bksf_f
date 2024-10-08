@@ -1,7 +1,7 @@
-import { API_BASE_URL } from '../config/config';
+
 
 export const postClientData = async (clientData) => {
-  const url = `${API_BASE_URL}/client`;  // Construcción dinámica de la URL
+  const url = `${process.env.REACT_APP_API_URL}/client`;  // Construcción dinámica de la URL
 
   try {
     const response = await fetch(url, {
@@ -10,9 +10,6 @@ export const postClientData = async (clientData) => {
       body: JSON.stringify(clientData),
       mode: 'cors',
     });
-
-    // Imprime la respuesta completa para depuración
-    console.log('Raw response:', response);
 
     if (!response.ok) {
       const errorMessage = `Failed with status: ${response.status}`;
@@ -31,24 +28,20 @@ export const postClientData = async (clientData) => {
 
   } catch (error) {
     console.error('Error sending client data:', error);
-    throw error;  // Se propaga el error al llamador
+    throw error;
   }
 };
 
-
 export const updateClientData = async (id, clientData) => {
-  const url = `${API_BASE_URL}/client/${id}`;  // Construcción dinámica de la URL con el ID
+  const url = `${process.env.REACT_APP_API_URL}/client/${id}`;  // Construcción dinámica de la URL con el ID
 
   try {
     const response = await fetch(url, {
-      method: 'PUT',  // Usamos PUT en lugar de POST
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
       body: JSON.stringify(clientData),
       mode: 'cors',
     });
-
-    // Imprime la respuesta completa para depuración
-    console.log('Raw response:', response);
 
     if (!response.ok) {
       const errorMessage = `Failed with status: ${response.status}`;
@@ -69,5 +62,15 @@ export const updateClientData = async (id, clientData) => {
     console.error('Error updating client data:', error);
     throw error;  // Se propaga el error al llamador
   }
+};
+
+export const INDEXAIntegracioncreditos = async (data) => {
+
+  try {
+  } catch (error) {
+    console.error('Error updating client data:', error);
+    throw error;
+  }
+
 };
 

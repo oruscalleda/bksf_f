@@ -5,6 +5,8 @@ import logo from "../img/logo.png";
 import financiar from "../img/financiar.png";
 import refinanciar from "../img/refinanciar.png";
 
+import http from "../components/httpClient";
+
 const buttonStyle = {
   backgroundColor: "rgb(234, 243, 250)",
   borderRadius: "10px",
@@ -18,31 +20,22 @@ const buttonStyle = {
 const textContainerStyle = {
   flex: "1",
   textAlign: "left",
-  marginLeft: "28px",
+  marginLeft: "15px",
   paddingBottom: "5px",
 };
 
 const imageStyleMobile = {
-  width: "91px",
+  width: "90px",
   height: "auto",
-  marginTop: "9px",
+  position: "absolute",
+  right: 0,
+  bottom: 0,
+  marginRight: "10px",
 };
-
-const imageStyle = {
-  width: "91px",
-  height: "auto",
-  marginTop: "9px",
-  position: "relative",
-  left: "-66px",
-  top: "11px",
-};
-
-
 
 const footerStyle = {
   backgroundColor: "rgb(90, 160, 227)",
   borderRadius: "0px 0px 10px 10px",
-  padding: "0 25px 0 10px",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
@@ -56,7 +49,6 @@ const footerStyle = {
 const footerStyleMobile = {
   backgroundColor: "rgb(90, 160, 227)",
   borderRadius: "0px 0px 10px 10px",
-  padding: "10px 25px 10px 10px",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
@@ -77,6 +69,46 @@ const buttonFooterStyle = {
   color: "white",
   fontSize: "1rem",
   flexDirection: "column",
+  marginBottom: "5px",
+};
+
+const imgFinanciar = (
+  <img
+    src={financiar}
+    alt="Financiamiento"
+    style={isMobile ? imageStyleMobile : null}
+  />
+);
+
+const imgRefinanciar = (
+  <img
+    src={refinanciar}
+    alt="Refinanciamiento"
+    style={isMobile ? imageStyleMobile : null}
+  />
+);
+
+const ej = {
+  id: 0,
+  rut: "12345678",
+  dv: "9",
+  phone: "+56912345678",
+  email: "example@testmail.com",
+  workerType: "Full-Time",
+  salary: 1500000,
+  startWorkingDate: "2021-05-12",
+  carValue: 12000000,
+  footAmount: 3000000,
+  fee: 400000,
+  caryear: 2020,
+  typeFinance: "Credit",
+  registrationNumber: "ABC123",
+  creation_dateDate: "2023-10-07",
+};
+
+const sendTest = () => {
+  const algo = http.post("client", ej);
+  console.log("algo ", algo);
 };
 
 const Home = () => {
@@ -104,11 +136,17 @@ const Home = () => {
       </header>
 
       <main>
+        <button onClick={() => sendTest()}>Hey</button>
         <div className="home-button-container">
           {/* Botón Financiamiento */}
           <Link
             to="/financiarWizard"
-            style={{ textDecoration: "none", display: "block", width: "100%" }}
+            style={{
+              textDecoration: "none",
+              display: "block",
+              width: "100%",
+              position: "relative",
+            }}
           >
             <div style={buttonStyle}>
               <div
@@ -142,17 +180,20 @@ const Home = () => {
                     Financiamos hasta el 80% del valor de tu vehículo
                   </p>
                 </div>
-                <img src={financiar} alt="Financiamiento" style={isMobile ? imageStyleMobile : imageStyle} />
+                {isMobile ? imgFinanciar : null}
               </div>
               <div style={isMobile ? footerStyleMobile : footerStyle}>
-                <p style={{ margin: "18px" }}>
+                <p style={{ marginLeft: "15px", marginTop: "15px" }}>
                   ¡No lo pienses más, tu nuevo auto está cada vez más cerca!
                 </p>
-                <div style={buttonFooterStyle}>
-                  <span>CONTINUAR</span>
-                  <span
-                    style={{ fontSize: "1.5rem", marginLeft: "10px" }}
-                  ></span>
+                <div className="financiar-btn">
+                  {!isMobile ? imgFinanciar : null}
+                  <div style={buttonFooterStyle}>
+                    <span>CONTINUAR</span>
+                    <span
+                      style={{ fontSize: "1.5rem", marginLeft: "10px" }}
+                    ></span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -164,28 +205,33 @@ const Home = () => {
             style={{
               textDecoration: "none",
               display: "block",
+              width: "100%",
               marginTop: "25px",
+              position: "relative",
             }}
           >
             <div style={buttonStyle}>
               <div
+                className="card-top"
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
                 }}
               >
-                <div style={textContainerStyle}>
+                <div className="card-top-text" style={textContainerStyle}>
                   <h1
                     style={{
-                      fontSize: "1.35rem",
+                      fontSize: "22px",
                       fontWeight: "bold",
-                      color: "rgb(30, 58, 138)",
                       marginBottom: "10px",
                       textAlign: "left",
                     }}
                   >
-                    RE - Financiamiento
+                    <span style={{ color: "rgb(0, 0, 0)" }}>RE-</span>
+                    <span style={{ color: "rgb(30, 58, 138)" }}>
+                      Financiamiento
+                    </span>
                   </h1>
                   <p
                     style={{
@@ -198,21 +244,20 @@ const Home = () => {
                     Baja la cuota de tu crédito automotriz aquí ¡100% online!
                   </p>
                 </div>
-                <img
-                  src={refinanciar}
-                  alt="Refinanciamiento"
-                  style={isMobile ? imageStyleMobile : imageStyle}
-                />
+                {isMobile ? imgRefinanciar : null}
               </div>
               <div style={isMobile ? footerStyleMobile : footerStyle}>
-                <p style={{ margin: "18px" }}>
-                  ¡No pierdas tiempo, renueva tu auto con la mejor cuota!
+                <p style={{ marginLeft: "15px", marginTop: "15px" }}>
+                  ¡No lo pienses más, tu nuevo auto está cada vez más cerca!
                 </p>
-                <div style={buttonFooterStyle}>
-                  <span>CONTINUAR</span>
-                  <span
-                    style={{ fontSize: "1.5rem", marginLeft: "10px" }}
-                  ></span>
+                <div className="financiar-btn">
+                  {!isMobile ? imgRefinanciar : null}
+                  <div style={buttonFooterStyle}>
+                    <span>CONTINUAR</span>
+                    <span
+                      style={{ fontSize: "1.5rem", marginLeft: "10px" }}
+                    ></span>
+                  </div>
                 </div>
               </div>
             </div>
