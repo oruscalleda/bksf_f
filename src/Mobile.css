@@ -372,7 +372,7 @@ input[type="submit"] {
   width: 100%;
   background-color: #1c4f97;
   color: white;
-  padding: 14px 20px;
+  padding: 10px 20px;
   margin: 8px 0;
   border: none;
   border-radius: 25px;
@@ -423,7 +423,8 @@ button[type="submit"] {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
-  width: 100%;
+  /* width: 100%; */
+  width: 93%;
   gap: 15px;
   align-items: center;
 }
@@ -655,13 +656,6 @@ button[type="submit"] {
   font-size: 14;
   font-weight: 700;
   cursor: pointer;
-}
-
-/*     MobileFix     */
-.stepNav-mobile {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
 }
 
 .simulacionRow {
@@ -948,4 +942,18 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+/* ERROR MSG */
+
+.error-msg {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+  border: 1px solid red;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #fdd;
+  white-space: pre-line;
+  text-align: center;
 }

@@ -1,6 +1,4 @@
 import Layout from "./pages/Layout";
-//import './Mobile.css';
-//import './App.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { isMobile } from "react-device-detect";
@@ -39,7 +37,6 @@ function App() {
     <div className="app-container">
       <Helmet>
         <script src="//cdn.muicss.com/mui-0.10.3/js/mui.min.js" />
-        {/*<link rel="stylesheet" type="text/css" href={cssFile} /> */}
       </Helmet>
       <div className="app-content">
         <BrowserRouter>

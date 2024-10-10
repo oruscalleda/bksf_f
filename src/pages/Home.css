@@ -1,143 +1,104 @@
-/* Estilos generales */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+@import "../assets/styles/settings.css";
+
+/* HOME */
+
+.home-container {
+  /* max-width: 1200px; */
+  /* margin: 40px auto; */
   padding: 20px;
-}
-
-.app-logo {
-  margin-right: 10px;
-  margin-left: -20px;
-  width: 100px;
-  height: auto;
-}
-
-.header-text-container {
-  margin-bottom: 20px;
-}
-
-.header-title {
-  text-align: left;
-  font-size: 2rem;
-}
-
-.header-description {
-  font-size: 1.2rem;
-}
-
-/* Ajustes de los botones */
-.home-button-container {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.large-button {
-  text-decoration: none;
-  flex: 1;
-  min-width: 300px;
-  max-width: 48%;
-  background-color: #f0f0f0;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.large-button:hover {
-  background-color: #e0e0e0;
-}
-
-.home-button {
-  text-align: left;
-}
-
-.button-content {
-  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
-.button-image-financiar {
-  width: 79px;
-  height: 99px;
-  margin-right: 10px;
+.home-container a {
+  text-decoration: none;
 }
 
-.button-image-refinanciar {
-  width: 91px;
-  height: 113px;
-  margin-right: 10px;
-}
-
-/* Footer de los botones */
-.home-button-footer {
-  text-align: center;
-}
-
-.p-button {
-  font-weight: bold;
-}
-
-/* Botón de atrás */
-.navButtonContainer {
-  margin-top: 50px;
-}
-
-.atrasButton {
-  background-color: #ccc;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.atrasButton:hover {
-  background-color: #bbb;
-}
-
-
-
-.option-container {
-  border: 2px solid #ccc;
-  padding: 20px;
-  margin: 10px 0;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.option-container.selected {
-  border-color: #007bff;
-  background-color: #e6f0ff;
-}
-
-.button-label {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.navButtonContainer {
+header {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.atrasButton, .continuarButton {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
+.header-text-container {
+  display: flex;
+  flex-direction: column;
 }
 
-.atrasButton {
-  background-color: #f0f0f0;
-  border: none;
+.header-text-container h1 {
+  text-align: left;
 }
 
-.continuarButton {
-  background-color: #007bff;
+.financiar-wizard-link {
+  position: relative;
+}
+
+.refinanciar-wizard-link {
+  position: relative;
+}
+
+.wizard-container {
+  background-color: var(--light-blue);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px;
+  border: 1px solid var(--grey-border);
+}
+
+.card-top {
+  min-height: 100px;
+}
+
+.card-top-text {
+  margin-left: 20px;
+  /* padding-bottom: 5px; */
+}
+
+.card-top-text h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--darkest-blue);
+  /* margin-bottom: 10px; */
+  text-align: left;
+}
+
+.card-top-text p {
+  font-size: 1rem;
+  color: black;
+  text-align: left;
+}
+
+.card-footer {
+  background-color: var(--base-blue);
+  border-radius: 0px 0px 10px 10px !important;
+  display: flex;
   color: white;
-  border: none;
+  font-size: 1rem;
+  font-weight: normal;
+  flex-direction: row;
+  min-height: 50px;
+  align-items: center;
+  /* width: 100%;
+  align-items: center;
+  justify-content: space-between; */
 }
 
+.card-footer p {
+  text-align: left;
+  margin-left: 20px;
+  margin-bottom: 0;
+}
 
-
+.continue-btn {
+  background-color: rgb(30, 58, 138);
+  padding: 7px 27px;
+  border-radius: 25px;
+  font-weight: bold;
+  color: white;
+  font-size: 1rem;
+  margin-bottom: 7px;
+}
