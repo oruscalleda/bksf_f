@@ -1,0 +1,68 @@
+@import "../../assets/styles/settings.scss";
+
+.step-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 200px;
+  border-right: 1px solid $grey-border;
+  gap: 10px;
+
+  img {
+    width: 200px;
+  }
+
+  li {
+    margin: 15px;
+
+    &.active {
+      font-weight: bold;
+      &::after {
+        background-color: $darkest-blue;
+      }
+    }
+  }
+}
+
+/* .step-nav li {
+  margin-bottom: 20px;
+  position: relative;
+} */
+
+/* .step-nav li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 32px;
+  left: 12px;
+  height: calc(100% - 64px);
+  width: 2px;
+  background-color: $grey-border);
+} */
+
+.step-nav-mobile {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.step-circle {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: $dark-grey;
+  color: white;
+  text-align: center;
+  font-size: 14px;
+  line-height: 24px;
+
+  &.active {
+    background-color: $dark-blue;
+  }
+}
+
+.step-label {
+  font-size: 16px;
+  color: #333;
+  margin-left: 15px;
+}

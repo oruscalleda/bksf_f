@@ -1,8 +1,8 @@
 import React from "react";
-import logo from "../../assets/public/logo.svg";
+import logo from "../../img/logo.png";
 import { isMobile } from "react-device-detect";
 
-import "./StepNav.css";
+import "./StepNav.scss";
 
 const StepNav = ({ steps, currentStep, totalSteps }) => {
   return (
@@ -10,11 +10,7 @@ const StepNav = ({ steps, currentStep, totalSteps }) => {
       {isMobile ? (
         <>
           <div className="stepNav-mobile">
-            <img
-              src={logo}
-              alt="Logo"
-              style={{ marginRight: "10px", width: "150px" }}
-            />
+            <img src={logo} alt="Logo" />
             <span>
               Paso {currentStep} de {totalSteps}
             </span>
@@ -32,7 +28,7 @@ const StepNav = ({ steps, currentStep, totalSteps }) => {
           <img
             src={logo}
             alt="Logo"
-            style={{ marginRight: "10px", width: "150px" }}
+            // style={{ marginRight: "10px", width: "150px" }}
           />
           {steps.map((step) => (
             <li

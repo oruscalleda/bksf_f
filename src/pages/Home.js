@@ -5,7 +5,7 @@ import logo from "../img/logo.png";
 import financiar from "../img/financiar.png";
 import refinanciar from "../img/refinanciar.png";
 
-import "./Home.css";
+import "./Home.scss";
 
 const imgFinanciar = <img src={financiar} alt="Financiamiento" />;
 

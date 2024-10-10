@@ -23,11 +23,11 @@ import ValidarConAgente from "./pages/ValidarConAgente";
 function App() {
   useEffect(() => {
     if (isMobile) {
-      import("./Mobile.css").then(() => {
+      import("./Mobile.scss").then(() => {
         console.log("Mobile CSS loaded");
       });
     } else {
-      import("./App.css").then(() => {
+      import("./App.scss").then(() => {
         console.log("Desktop CSS loaded");
       });
     }

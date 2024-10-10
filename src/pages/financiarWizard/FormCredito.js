@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import EntradaMoneda from "../../components/EntradaMoneda";
 import { isMobile } from "react-device-detect";
 import { updateClientData } from "../../services/apiService";
-import { validarPie, getCurrentDate } from '../../utils/formUtils';
+import { validarPie, getCurrentDate } from "../../utils/formUtils";
 
+import "./FinanciarWizard.scss";
 
 const FormCredito = ({ onNextStep, onPreviousStep, data }) => {
   // Verificar si `data` está en formato JSON y parsearlo si es necesario
-  const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+  const parsedData = typeof data === "string" ? JSON.parse(data) : data;
 
   // Recuperar datos de localStorage (si existen)
   const storedFormData = JSON.parse(localStorage.getItem("formData")) || {};
@@ -15,20 +16,23 @@ const FormCredito = ({ onNextStep, onPreviousStep, data }) => {
   // Inicializar los valores con los datos que vienen de ContactForm y agregar los campos de crédito
   const [formData, setFormData] = useState({
     id: parsedData.id || storedFormData.id,
-    rut: parsedData?.rut || storedFormData?.rut || '',
-    phone: parsedData?.phone || storedFormData?.phone || '',
-    email: parsedData?.email || storedFormData?.email || '',
-    typeFinance: parsedData?.typeFinance || storedFormData?.typeFinance || '',
-    workerType: parsedData?.workerType || storedFormData?.workerType || '',
+    rut: parsedData?.rut || storedFormData?.rut || "",
+    phone: parsedData?.phone || storedFormData?.phone || "",
+    email: parsedData?.email || storedFormData?.email || "",
+    typeFinance: parsedData?.typeFinance || storedFormData?.typeFinance || "",
+    workerType: parsedData?.workerType || storedFormData?.workerType || "",
     salary: parsedData?.salary || storedFormData?.salary || 0,
-    startWorkingDate: parsedData?.startWorkingDate || storedFormData?.startWorkingDate || '',
-    carValue: parsedData?.carValue || storedFormData?.carValue || '',
-    footAmount: parsedData?.footAmount || storedFormData?.footAmount || '',
-    fee: parsedData?.fee || storedFormData?.fee || '',
-    caryear: parsedData?.caryear || storedFormData?.caryear || ''
+    startWorkingDate:
+      parsedData?.startWorkingDate || storedFormData?.startWorkingDate || "",
+    carValue: parsedData?.carValue || storedFormData?.carValue || "",
+    footAmount: parsedData?.footAmount || storedFormData?.footAmount || "",
+    fee: parsedData?.fee || storedFormData?.fee || "",
+    caryear: parsedData?.caryear || storedFormData?.caryear || "",
   });
 
-  const [selectedYear, setSelectedYear] = useState(storedFormData?.caryear || '');
+  const [selectedYear, setSelectedYear] = useState(
+    storedFormData?.caryear || ""
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -37,7 +41,7 @@ const FormCredito = ({ onNextStep, onPreviousStep, data }) => {
     const storedFormData = JSON.parse(localStorage.getItem("formData"));
     if (storedFormData) {
       setFormData(storedFormData);
-      setSelectedYear(storedFormData.caryear || '');
+      setSelectedYear(storedFormData.caryear || "");
     }
   }, []);
 
@@ -52,25 +56,25 @@ const FormCredito = ({ onNextStep, onPreviousStep, data }) => {
     const currentMonth = new Date().getMonth();
     const startYear = currentMonth >= 8 ? currentYear - 7 : currentYear - 8; // Rango desde hace 7 años
     const endYear = currentYear + 1; // Hasta el próximo año
-    return Array.from({ length: endYear - startYear + 1 }, (_, i) => endYear - i); // Invertir el orden
+    return Array.from(
+      { length: endYear - startYear + 1 },
+      (_, i) => endYear - i
+    ); // Invertir el orden
   };
-
 
   const validateForm = () => {
     // Validar el valor aproximado del vehículo
-    const carValue = parseFloat(
-        String(formData.carValue).replace(/\D/g, '')
-    );
+    const carValue = parseFloat(String(formData.carValue).replace(/\D/g, ""));
     if (!carValue || carValue <= 0) {
       return "Por favor, ingresa un valor válido para el vehículo.";
     }
 
     // Validar el monto del pie
     const footAmount = parseFloat(
-        String(formData.footAmount).replace(/\D/g, '')
+      String(formData.footAmount).replace(/\D/g, "")
     );
     if (!validarPie(footAmount, carValue)) {
-      const minFootAmount = carValue * 0.20;
+      const minFootAmount = carValue * 0.2;
       return `El monto del pie debe ser al menos el 20% del valor del vehículo (${minFootAmount.toLocaleString()}).`;
     }
 
@@ -82,16 +86,20 @@ const FormCredito = ({ onNextStep, onPreviousStep, data }) => {
 
     // Validar el año del vehículo
     const currentYear = parseInt(getCurrentDate().slice(0, 4));
-    if (!formData.caryear || formData.caryear < 2000 || formData.caryear > currentYear) {
+    if (
+      !formData.caryear ||
+      formData.caryear < 2000 ||
+      formData.caryear > currentYear
+    ) {
       return `Por favor, selecciona un año del vehículo válido entre 2000 y ${currentYear}.`;
     }
 
     return null; // Sin errores
-};
+  };
 
   // Limpiar los valores numéricos que contienen formato de moneda
   const cleanCurrencyValue = (value) => {
-    return parseFloat(value.replace(/[^\d,-]/g, '').replace(',', '.')) || 0;
+    return parseFloat(value.replace(/[^\d,-]/g, "").replace(",", ".")) || 0;
   };
 
   // Manejar los cambios en los inputs
@@ -99,9 +107,10 @@ const FormCredito = ({ onNextStep, onPreviousStep, data }) => {
     const { name, value } = e.target;
 
     // Limpiar los valores de moneda si corresponde
-    const parsedValue = (name === 'carValue' || name === 'footAmount')
-      ? cleanCurrencyValue(value) // Limpiar formato de moneda antes de guardar
-      : value;
+    const parsedValue =
+      name === "carValue" || name === "footAmount"
+        ? cleanCurrencyValue(value) // Limpiar formato de moneda antes de guardar
+        : value;
 
     setFormData((prevData) => ({ ...prevData, [name]: parsedValue }));
   };
@@ -115,7 +124,6 @@ const FormCredito = ({ onNextStep, onPreviousStep, data }) => {
     event.preventDefault();
     setIsLoading(true);
     setError(null);
-
 
     // Validar el formulario antes de enviar
     const validationError = validateForm();
@@ -131,14 +139,14 @@ const FormCredito = ({ onNextStep, onPreviousStep, data }) => {
       carValue: formData.carValue, // Usar el valor limpiado y convertido a número
       footAmount: formData.footAmount, // Usar el monto limpiado y convertido a número
       fee: formData.fee, // Actualizar el número de cuotas
-      caryear: formData.caryear
+      caryear: formData.caryear,
     };
 
     try {
       // Aquí deberías hacer la llamada PUT al servicio para actualizar los datos en tu backend
       const response = await updateClientData(updatedData.id, updatedData);
 
-      console.log('datos de vuelta al actualizar en API', response);
+      console.log("datos de vuelta al actualizar en API", response);
 
       // Pasar los datos actualizados al siguiente paso
       onNextStep(updatedData);
@@ -151,7 +159,7 @@ const FormCredito = ({ onNextStep, onPreviousStep, data }) => {
   };
 
   return (
-    <div>
+    <div className="financiar-wizard-credito-form">
       <h1>Información del crédito a solicitar</h1>
       <p>Para continuar necesitamos conocer la siguiente información</p>
       <form onSubmit={handleSubmit}>
@@ -164,6 +172,7 @@ const FormCredito = ({ onNextStep, onPreviousStep, data }) => {
             <EntradaMoneda
               id="carValue"
               name="carValue"
+              type="text"
               placeholder="Ej: 900.000"
               className="form-input"
               value={formData.carValue} // Vincular el valor con el estado
@@ -180,6 +189,7 @@ const FormCredito = ({ onNextStep, onPreviousStep, data }) => {
           </label>
           <div className="outlinedInput-root textField-root inputBase-root">
             <EntradaMoneda
+              type="text"
               name="footAmount"
               placeholder="Ej: 900.000"
               className="form-input"
@@ -190,7 +200,7 @@ const FormCredito = ({ onNextStep, onPreviousStep, data }) => {
           </div>
         </div>
 
-        <div className="input-container">
+        <div className="credito-input-container">
           {/* Número de cuotas */}
           <div className="formControl-root">
             <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
@@ -209,7 +219,6 @@ const FormCredito = ({ onNextStep, onPreviousStep, data }) => {
                     {cuota}
                   </option>
                 ))}
-
               </select>
             </div>
           </div>
@@ -239,28 +248,20 @@ const FormCredito = ({ onNextStep, onPreviousStep, data }) => {
           </div>
         </div>
 
-                            {/* Mostrar mensaje de error si existe */}
-                            {error && (
-        <div style={{ 
-          color: "red", 
-          fontSize: "14px", 
-          marginBottom: "10px", 
-          border: "1px solid red", 
-          padding: "10px", 
-          borderRadius: "5px", 
-          backgroundColor: "#fdd" 
-        }}>
-          {error}
-        </div>
-      )}
+        {/* Mostrar mensaje de error si existe */}
+        {error && <div className="error-msg">{error}</div>}
 
         {/* Botones de navegación */}
-        <div className="navButtonContainer">
-          <button className="atrasButton" onClick={onPreviousStep}>
+        <div className="nav-button-container">
+          <button className="back-btn" onClick={onPreviousStep}>
             Atrás
           </button>
-          <button type="submit" disabled={isLoading}
-            className="continuarButton" style={!isMobile ? { width: "60%" } : null}>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="continue-btn"
+            // style={!isMobile ? { width: "60%" } : null}
+          >
             SIMULAR
           </button>
         </div>

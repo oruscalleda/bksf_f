@@ -2,9 +2,16 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import EntradaMoneda from "../../components/EntradaMoneda";
 import values from "../../utils/values.json";
-import { formatRUT, formatPhone, getCurrentDate, isValidRUT } from "../../utils/formUtils";
+import {
+  formatRUT,
+  formatPhone,
+  getCurrentDate,
+  isValidRUT,
+} from "../../utils/formUtils";
 import { saveToLocalStorage } from "../../services/storageService";
 import { postClientData } from "../../services/apiService";
+
+import "./FinanciarWizard.scss";
 
 const ContactForm = ({ onNextStep, data }) => {
   const formRef = useRef(null);
@@ -35,14 +42,14 @@ const ContactForm = ({ onNextStep, data }) => {
       name === "rut"
         ? formatRUT(value)
         : name === "phone"
-          ? formatPhone(value)
-          : name === "salary" // Si es el campo salary, asegúrate de que sea numérico
-            ? value.replace(/\D/g, '') // Deja solo números
-            : value;
+        ? formatPhone(value)
+        : name === "salary" // Si es el campo salary, asegúrate de que sea numérico
+        ? value.replace(/\D/g, "") // Deja solo números
+        : value;
 
     setFormData((prevData) => ({
       ...prevData,
-      [name]: formattedValue
+      [name]: formattedValue,
     }));
   };
 
@@ -61,21 +68,18 @@ const ContactForm = ({ onNextStep, data }) => {
       return "Por favor, selecciona un tipo de empleo.";
     }
 
-
-
     if (!formData.salary) {
       return "Por favor, ingresa tu renta líquida.";
     }
 
     // Verificar si salary es una cadena antes de usar replace
     const salaryValue = parseFloat(
-      String(formData.salary).replace(/\D/g, '')  // Convertir a cadena y eliminar caracteres no numéricos
+      String(formData.salary).replace(/\D/g, "") // Convertir a cadena y eliminar caracteres no numéricos
     );
-    if (salaryValue < 600000) {  // Verificar el valor mínimo
+    if (salaryValue < 600000) {
+      // Verificar el valor mínimo
       return "La renta mínima debe ser al menos $600.000.";
     }
-
-
 
     if (!formData.startWorkingDate) {
       return "Por favor, ingresa la fecha de ingreso laboral.";
@@ -98,19 +102,20 @@ const ContactForm = ({ onNextStep, data }) => {
     }
 
     // Verificar si salary es una cadena antes de usar replace
-    const salaryAsString = typeof formData.salary === 'string'
-      ? formData.salary.replace(/\D/g, '')  // Si es cadena, usar replace para eliminar caracteres no numéricos
-      : formData.salary;  // Si ya es un número, dejarlo tal cual
+    const salaryAsString =
+      typeof formData.salary === "string"
+        ? formData.salary.replace(/\D/g, "") // Si es cadena, usar replace para eliminar caracteres no numéricos
+        : formData.salary; // Si ya es un número, dejarlo tal cual
 
     // Preparar los datos para enviarlos
     const submittedData = {
-      ...formData,  // Incluir los datos actuales del formulario
+      ...formData, // Incluir los datos actuales del formulario
       typeFinance: "FINANCIAMIENTO",
       salary: parseInt(salaryAsString), // Asegurarse de que salary sea un número
     };
 
     try {
-      const response = await postClientData(submittedData);  // Llamar al servicio de API real
+      const response = await postClientData(submittedData); // Llamar al servicio de API real
 
       /* Simular respuesta del servidor
       const response = {
@@ -126,8 +131,7 @@ const ContactForm = ({ onNextStep, data }) => {
 
       // Guardar la respuesta en localStorage y avanzar al siguiente paso
       localStorage.setItem("formData", JSON.stringify(response));
-      onNextStep(response);  // Pasar los datos como objeto, no como cadena JSON
-
+      onNextStep(response); // Pasar los datos como objeto, no como cadena JSON
     } catch (error) {
       setError("Error al enviar los datos, por favor inténtalo de nuevo.");
       console.error("Error al enviar los datos:", error);
@@ -137,14 +141,10 @@ const ContactForm = ({ onNextStep, data }) => {
   };
 
   return (
-    <div>
+    <div className="financiar-wizard-contact-form">
       {/* Título y subtítulo */}
-      <h1 style={{ fontSize: "18px", fontWeight: "bold", color: "#004E9C" }}>
-        Información de contacto
-      </h1>
-      <p style={{ fontSize: "14px" }}>
-        Completa tus datos para poder contactarte correctamente
-      </p>
+      <h1>Información de contacto</h1>
+      <p>Completa tus datos para poder contactarte correctamente</p>
 
       <form ref={formRef} onSubmit={handleSubmit} className="mui-form">
         {/* Campo de RUT */}
@@ -210,7 +210,7 @@ const ContactForm = ({ onNextStep, data }) => {
           <div className="outlinedInput-root textField-root inputBase-root">
             <select
               name="workerType"
-              className="form-input"
+              className="worker-type"
               value={formData.workerType}
               onChange={handleInputChange}
               required
@@ -234,7 +234,7 @@ const ContactForm = ({ onNextStep, data }) => {
           </label>
           <div className="outlinedInput-root textField-root inputBase-root">
             <EntradaMoneda
-              style={{ width: '100%', maxWidth: '430px', height: '60px', padding: '12px 20px' }}
+              type="text"
               name="salary"
               placeholder="Ej: 900.000"
               min={600000}
@@ -265,35 +265,18 @@ const ContactForm = ({ onNextStep, data }) => {
         </div>
 
         {/* Mostrar mensaje de error si existe */}
-        {error && (
-          <div style={{
-            color: "red",
-            fontSize: "14px",
-            marginBottom: "10px",
-            border: "1px solid red",
-            padding: "10px",
-            borderRadius: "5px",
-            backgroundColor: "#fdd"
-          }}>
-            {error}
-          </div>
-        )}
+        {error && <div className="error-msg">{error}</div>}
 
         {/* Botones de navegación */}
-        <div className="navButtonContainer">
+        <div className="nav-button-container">
           <button
             disabled={isLoading}
-            className="atrasButton"
+            className="back-btn"
             onClick={() => navigate(-1)}
           >
             Atrás
           </button>
-          {/* {error && <div style={{ color: "red" }}>{error}</div>} */}
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="continuarButton"
-          >
+          <button type="submit" disabled={isLoading} className="continue-btn">
             {isLoading ? "Cargando..." : "CONTINUAR"}
           </button>
         </div>

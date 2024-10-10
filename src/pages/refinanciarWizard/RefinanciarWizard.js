@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import StepNav from "../StepNav";
+import StepNav from "../../components/stepnav/StepNav";
 import FormContacto from "./FormContacto";
 import ValidarRenta from "../ValidarRentaWizard/ValidarRenta";
 import InfoCredito from "./InformacionCredito";

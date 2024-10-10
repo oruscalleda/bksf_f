@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import logo from "../../img/logo.png";
-import StepNav from "../StepNav";
+import StepNav from "../../components/stepnav/StepNav";
 import FormContacto from "./FormContacto";
 import FormCredito from "./FormCredito";
 import Simulacion from "./Simulacion";
 // import ValidarRenta from "../ValidarRentaWizard/ValidarRenta";
-import { saveToLocalStorage } from "../../services/storageService";
+
+import "./FinanciarWizard.scss";
 
 const FinanciarWizard = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -57,38 +57,22 @@ const FinanciarWizard = () => {
   const StepComponent = steps.find((step) => step.id === currentStep).component;
 
   return (
-    <div className="wizard-container">
-      <div className="stepNav-mobile">
-        <img
-          src={logo}
-          alt="Logo"
-          style={{ marginRight: "10px", width: "150px" }}
-        />
-        <span>
-          Paso {currentStep} de {totalSteps}
-        </span>
-      </div>
-
-      {/* Indicador visual del progreso */}
-      <div className="step-indicator">
-        <div className="gray-bar" />
-        <div
-          className="blue-bar"
-          style={{ width: `${(currentStep / totalSteps) * 100}%` }}
-        />
-      </div>
-
+    <div className="financiar-wizard-container">
       {/* Barra de navegación de pasos */}
-      <StepNav steps={steps} currentStep={currentStep} />
+      <StepNav
+        steps={steps}
+        currentStep={currentStep}
+        totalSteps={totalSteps}
+      />
 
       {/* Contenido del wizard basado en el paso actual */}
-      <div className="wizard-content">
+      <>
         <StepComponent
           onNextStep={handleNextStep}
           onPreviousStep={handlePreviousStep}
           data={formData}
         />
-      </div>
+      </>
     </div>
   );
 };

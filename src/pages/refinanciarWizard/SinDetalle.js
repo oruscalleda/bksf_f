@@ -1,21 +1,31 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { isMobile } from "react-device-detect";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import EntradaMoneda from "../../components/EntradaMoneda";
 import YearSelect from "../../components/YearSelect";
 import values from "../../utils/values.json";
 
-const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
-  const [formValues, setFormValues] = useState({
-    entidad: "",
-    montoDeuda: "", // Inicializamos con cadena vacía
-    cuotasPagadas: "",
-    cuotasTotales: "",
-    totalPie: "",
-    cuotamensual: "",
-    marca: "",
-    modelo: "",
-    year: "",
+const SinDetalle = ({ onNextStep, onPreviousStep, data, onBack }) => {
+  // Verificar si `data` está en formato JSON y parsearlo si es necesario
+  const parsedData = typeof data === "string" ? JSON.parse(data) : data;
+
+  // Recuperar datos de localStorage (si existen)
+  const storedFormData = JSON.parse(localStorage.getItem("formData")) || {};
+  // Inicializar los valores con los datos que vienen de ContactForm y agregar los campos de crédito
+  const [formData, setFormData] = useState({
+    id: parsedData?.id || storedFormData?.id,
+    rut: parsedData?.rut || storedFormData?.rut || "",
+    phone: parsedData?.phone || storedFormData?.phone || "",
+    email: parsedData?.email || storedFormData?.email || "",
+    typeFinance: parsedData?.typeFinance || storedFormData?.typeFinance || "",
+    workerType: parsedData?.workerType || storedFormData?.workerType || "",
+    salary: parsedData?.salary || storedFormData?.salary || 0,
+    startWorkingDate:
+      parsedData?.startWorkingDate || storedFormData?.startWorkingDate || "",
+    carValue: parsedData?.carValue || storedFormData?.carValue || "",
+    footAmount: parsedData?.footAmount || storedFormData?.footAmount || "",
+    fee: parsedData?.fee || storedFormData?.fee || "",
+    caryear: parsedData?.caryear || storedFormData?.caryear || "",
   });
 
   const location = useLocation();
@@ -26,9 +36,31 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [selectedYear, setSelectedYear] = useState("");
 
+  // Cargar los datos almacenados cuando el componente se monte
+  useEffect(() => {
+    const storedFormData = JSON.parse(localStorage.getItem("formData"));
+    if (storedFormData) {
+      setFormData(storedFormData);
+      setSelectedYear(storedFormData.caryear || "");
+    }
+  }, []);
+
+  // Limpiar los valores numéricos que contienen formato de moneda
+  const cleanCurrencyValue = (value) => {
+    return parseFloat(value.replace(/[^\d,-]/g, "").replace(",", ".")) || 0;
+  };
+
+  // Manejar los cambios en los inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
+
+    // Limpiar los valores de moneda si corresponde
+    const parsedValue =
+      name === "carValue" || name === "footAmount"
+        ? cleanCurrencyValue(value) // Limpiar formato de moneda antes de guardar
+        : value;
+
+    setFormData((prevData) => ({ ...prevData, [name]: parsedValue }));
   };
 
   const getYearRange = () => {
@@ -44,7 +76,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
 
   const handleYearChange = (year) => {
     setSelectedYear(year);
-    setFormValues((formValues) => ({ ...formValues, year: year }));
+    setFormData((prevData) => ({ ...prevData, caryear: year }));
   };
 
   const handleTooltipClick = () => {
@@ -54,9 +86,11 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
   const handleNextStep = () => {
     navigate("/ValidarConAgente", { state: { currentStep: 3 } });
   };
+
   const handlePreviousStep = () => {
     onBack();
   };
+
   return (
     <div style={{ width: "100%" }}>
       <h1 style={{ marginLeft: "10px" }}>Información del crédito</h1>
@@ -64,7 +98,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
         Para continuar con tu solicitud necesitamos info de tu crédito
       </p>
       <form>
-        <div class="formControl-root">
+        <div className="formControl-root">
           <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
             Selecciona tu institución*
           </label>
@@ -72,7 +106,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
             <select
               name="entidad"
               className="form-input"
-              value={formValues.entidad}
+              value={formData.entidad}
               onChange={handleInputChange}
             >
               {values.institucion.map((option) => (
@@ -84,7 +118,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
           </div>
         </div>
         <div
-          class="formControl-root"
+          className="formControl-root"
           style={{ flexDirection: "row", alignItems: "center" }}
         >
           <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
@@ -92,7 +126,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
           </label>
           <div className="outlinedInput-root textField-root inputBase-root">
             <EntradaMoneda
-              value={formValues.montoDeuda}
+              value={formData.montoDeuda}
               name="montoDeuda" // Cambié a "montoDeuda" para que coincida con el nombre en el estado
               id="valor"
               onChange={handleInputChange}
@@ -173,7 +207,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
           </div>
         )}
 
-<div class="formControl-root">
+        <div className="formControl-root">
           <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
             Total del pie*
           </label>
@@ -181,7 +215,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
             <EntradaMoneda
               id="totalPie"
               name="totalPie"
-              value={formValues.totalPie}
+              value={formData.totalPie}
               onChange={handleInputChange}
               placeholder="$8.888.888"
               className="form-input"
@@ -190,14 +224,14 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
         </div>
         <div className="cuotas-container" style={{ flexDirection: "row" }}>
           <div className="form-container" style={{ alignContent: "initial" }}>
-            <div class="formControl-root">
+            <div className="formControl-root">
               <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
                 Cuotas pagadas*
               </label>
               <div className="outlinedInput-root textField-root inputBase-root">
                 <input
                   type="text"
-                  value={formValues.cuotasPagadas}
+                  value={formData.cuotasPagadas}
                   onChange={handleInputChange}
                   name="cuotasPagadas"
                   id="cuotasPagadas"
@@ -206,14 +240,14 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
                 ></input>
               </div>
             </div>
-            <div class="formControl-root">
+            <div className="formControl-root">
               <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
                 Cuotas totales*
               </label>
               <div className="outlinedInput-root textField-root inputBase-root">
                 <input
                   step="1"
-                  value={formValues.cuotasTotales}
+                  value={formData.cuotasTotales}
                   onChange={handleInputChange}
                   type="text"
                   name="cuotasTotales"
@@ -226,7 +260,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
           </div>
         </div>
 
-        <div class="formControl-root">
+        <div className="formControl-root">
           <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
             Valor cuota mensual*
           </label>
@@ -234,7 +268,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
             <EntradaMoneda
               id="cuotamensual"
               name="cuotamensual"
-              value={formValues.cuotamensual}
+              value={formData.cuotamensual}
               onChange={handleInputChange}
               placeholder="$8.888.888"
               className="form-input"
@@ -243,14 +277,14 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
         </div>
         <div className="cuotas-container">
           <div className="form-container" style={{ alignContent: "initial" }}>
-            <div class="formControl-root">
+            <div className="formControl-root">
               <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
                 Marca*
               </label>
               <div className="outlinedInput-root textField-root inputBase-root">
                 <input
                   type="text"
-                  value={formValues.marca}
+                  value={formData.marca}
                   onChange={handleInputChange}
                   id="marca"
                   name="marca"
@@ -259,7 +293,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
                 ></input>
               </div>
             </div>
-            <div class="formControl-root">
+            <div className="formControl-root">
               <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
                 Modelo*
               </label>
@@ -267,7 +301,7 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
                 <input
                   type="text"
                   id="modelo"
-                  value={formValues.modelo}
+                  value={formData.modelo}
                   onChange={handleInputChange}
                   name="modelo"
                   className="form-input-column"
@@ -278,12 +312,12 @@ const SinDetalle = ({ steps, currentStep, onChange, onBack }) => {
           </div>
         </div>
         <div className="vehiculo-year-container">
-          <div class="formControl-root">
+          <div className="formControl-root">
             <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
               Año del vehículo*
             </label>
             <div className="outlinedInput-root textField-root inputBase-root">
-            <select
+              <select
                 name="anno"
                 className="form-input-column"
                 onChange={(e) => handleYearChange(e.target.value)}

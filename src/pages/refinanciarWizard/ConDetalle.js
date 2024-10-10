@@ -4,6 +4,7 @@ import EntradaMoneda from "../../components/EntradaMoneda";
 import YearSelect from "../../components/YearSelect";
 import values from "../../utils/values.json";
 import FileLoader from "./FileLoader";
+import { validarPie, getCurrentDate } from "../../utils/formUtils";
 
 import { ReactComponent as CheckMarkIcon } from "../../img/check-mark.svg";
 import { ReactComponent as TrashIcon } from "../../img/trash.svg";
@@ -25,15 +26,38 @@ const ConDetalle = ({
 
   const [selectedYear, setSelectedYear] = useState(""); // Estado para el año seleccionado
   const [showTooltip, setShowTooltip] = useState(false);
-  const [formValues, setFormValues] = useState({
-    entidad: "",
-    valor: "",
-    cuotasPagadas: "",
-    cuotasTotales: "",
-    marca: "",
-    modelo: "",
-    anno: "",
+
+  // Verificar si `data` está en formato JSON y parsearlo si es necesario
+  const parsedData = typeof data === "string" ? JSON.parse(data) : data;
+
+  // Recuperar datos de localStorage (si existen)
+  const storedFormData = JSON.parse(localStorage.getItem("formData")) || {};
+
+  // Inicializar los valores con los datos que vienen de ContactForm y agregar los campos de crédito
+  const [formData, setFormData] = useState({
+    id: parsedData?.id || storedFormData?.id,
+    rut: parsedData?.rut || storedFormData?.rut || "",
+    phone: parsedData?.phone || storedFormData?.phone || "",
+    email: parsedData?.email || storedFormData?.email || "",
+    typeFinance: parsedData?.typeFinance || storedFormData?.typeFinance || "",
+    workerType: parsedData?.workerType || storedFormData?.workerType || "",
+    salary: parsedData?.salary || storedFormData?.salary || 0,
+    startWorkingDate:
+      parsedData?.startWorkingDate || storedFormData?.startWorkingDate || "",
+    carValue: parsedData?.carValue || storedFormData?.carValue || "",
+    footAmount: parsedData?.footAmount || storedFormData?.footAmount || "",
+    fee: parsedData?.fee || storedFormData?.fee || "",
+    caryear: parsedData?.caryear || storedFormData?.caryear || "",
   });
+
+  // Cargar los datos almacenados cuando el componente se monte
+  useEffect(() => {
+    const storedFormData = JSON.parse(localStorage.getItem("formData"));
+    if (storedFormData) {
+      setFormData(storedFormData);
+      setSelectedYear(storedFormData.caryear || "");
+    }
+  }, []);
 
   const getYearRange = () => {
     const currentYear = new Date().getFullYear();
@@ -48,12 +72,12 @@ const ConDetalle = ({
 
   const handleYearChange = (year) => {
     setSelectedYear(year);
-    setFormValues((prevData) => ({ ...prevData, anno: year }));
+    setFormData((prevData) => ({ ...prevData, anno: year }));
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues((prevData) => ({ ...prevData, [name]: value }));
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleTooltipClick = () => {
@@ -66,6 +90,41 @@ const ConDetalle = ({
 
   const handleLoadFile = (file) => {
     setLoadedFile(file);
+  };
+
+  const validateForm = () => {
+    // Validar el valor aproximado del vehículo
+    const carValue = parseFloat(String(formData.carValue).replace(/\D/g, ""));
+    if (!carValue || carValue <= 0) {
+      return "Por favor, ingresa un valor válido para el vehículo.";
+    }
+
+    // Validar el monto del pie
+    const footAmount = parseFloat(
+      String(formData.footAmount).replace(/\D/g, "")
+    );
+    if (!validarPie(footAmount, carValue)) {
+      const minFootAmount = carValue * 0.2;
+      return `El monto del pie debe ser al menos el 20% del valor del vehículo (${minFootAmount.toLocaleString()}).`;
+    }
+
+    // Validar el número de cuotas
+    const validFees = [6, 12, 18, 24, 30, 36, 42, 48];
+    if (!formData.fee || !validFees.includes(parseInt(formData.fee))) {
+      return "Por favor, selecciona un número de cuotas válido (6, 12, 18, 24, 30, 36, 42, 48).";
+    }
+
+    // Validar el año del vehículo
+    const currentYear = parseInt(getCurrentDate().slice(0, 4));
+    if (
+      !formData.caryear ||
+      formData.caryear < 2000 ||
+      formData.caryear > currentYear
+    ) {
+      return `Por favor, selecciona un año del vehículo válido entre 2000 y ${currentYear}.`;
+    }
+
+    return null; // Sin errores
   };
 
   const handleSubmit = async (event) => {
@@ -83,7 +142,7 @@ const ConDetalle = ({
             Authorization:
               "/BiDDlxZFEm4Jqr8V/5ru8sB7J+wSkHi6mwjoj9F/KthTA37xkhK+Q==",
           },
-          body: JSON.stringify(formValues),
+          body: JSON.stringify(formData),
           mode: "cors",
         }
       );
@@ -112,8 +171,8 @@ const ConDetalle = ({
     <div className="info-credito">
       <h1>Información del crédito</h1>
       <p>Completa los datos de tu crédito</p>
-      <form className="form-container">
-        <div class="formControl-root">
+      <form className="form-container" onSubmit={handleSubmit}>
+        <div className="formControl-root">
           <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
             Entidad financiera*
           </label>
@@ -132,7 +191,7 @@ const ConDetalle = ({
             </select>
           </div>
         </div>
-        <div class="formControl-root">
+        <div className="formControl-root">
           <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
             Monto de la deuda*
           </label>
@@ -141,7 +200,7 @@ const ConDetalle = ({
               id="valor"
               name="valor"
               type="text"
-              value={formValues.valor || ""}
+              value={formData.valor || ""}
               onChange={handleInputChange}
               placeholder="$8.888.888"
               className="form-input-column"
@@ -221,7 +280,7 @@ const ConDetalle = ({
         )}
 
         <div className="cuotas-container">
-          <div class="formControl-root">
+          <div className="formControl-root">
             <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
               Cuotas pagadas*
             </label>
@@ -230,7 +289,7 @@ const ConDetalle = ({
             </div>
           </div>
 
-          <div class="formControl-root">
+          <div className="formControl-root">
             <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
               Marca*
             </label>
@@ -245,7 +304,7 @@ const ConDetalle = ({
           </div>
         </div>
         <div className="vehiculo-container">
-          <div class="formControl-root">
+          <div className="formControl-root">
             <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
               Cuotas totales*
             </label>
@@ -253,7 +312,7 @@ const ConDetalle = ({
               <input type="text" className="form-input-column"></input>
             </div>
           </div>
-          <div class="formControl-root">
+          <div className="formControl-root">
             <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
               Modelo*
             </label>
@@ -268,7 +327,7 @@ const ConDetalle = ({
           </div>
         </div>
 
-        <div class="formControl-root">
+        <div className="formControl-root">
           <label className="inputLabel-root formLabel-root inputLabel-formControl inputLabel-outlined">
             Año del vehículo*
           </label>
@@ -304,27 +363,21 @@ const ConDetalle = ({
               />
             </>
           ) : (
-            <span style={{ whiteSpace: "pre-line", textAlign: "center" }}>
-              {error}
-            </span>
+            /* Mostrar mensaje de error si existe */
+            error && <div className="error-msg">{error}</div>
           )}
         </div>
-      </form>
 
-      <div className="navButtonContainer">
-        <input
-          type="button"
-          className="atrasButton"
-          value="Atrás"
-          onClick={handlePreviousStep}
-        />
-        <input
-          type="button"
-          className="continuarButton"
-          value="CONTINUAR"
-          onClick={handleNextStep}
-        />
-      </div>
+        <div className="navButtonContainer">
+          <input
+            type="button"
+            className="atrasButton"
+            value="Atrás"
+            onClick={handlePreviousStep}
+          />
+          <input type="submit" className="continuarButton" value="CONTINUAR" />
+        </div>
+      </form>
     </div>
   );
 };
